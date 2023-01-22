@@ -32,12 +32,12 @@ LOG_INFO= '[$(build_mode)] [$(build_platform)]'
 ifeq ($(build_platform),native)
 
 DIR_TARGET=			./lib/native
-NAME_TARGET=		$(DIR_TARGET)/lib-machine-learning.a
+NAME_TARGET=		$(DIR_TARGET)/lib-basic-genetic-algorithm.a
 
 else
 
 DIR_TARGET=			./lib/web-wasm
-NAME_TARGET=		$(DIR_TARGET)/lib-machine-learning.bc
+NAME_TARGET=		$(DIR_TARGET)/lib-basic-genetic-algorithm.bc
 
 endif
 
@@ -65,7 +65,7 @@ endif
 
 #### SRC
 
-SRC_FILES+=	$(wildcard $(DIR_SRC)/machine-learning/*.cpp)
+SRC_FILES+=	$(wildcard $(DIR_SRC)/basic-genetic-algorithm/*.cpp)
 
 #
 
@@ -112,17 +112,17 @@ RM=			rm -rf
 #
 ## RULE(S)
 
-all:	machine-learning
+all:	basic-genetic-algorithm
 
 ensurefolders:
 	@mkdir -p `dirname $(NAME_TARGET)`
 
 # @mkdir -p $(dir $@)
 
-machine-learning:	ensurefolders $(OBJ_FILES)
-	@echo ' ---> building $(LOG_INFO): "machine learning library"'
+basic-genetic-algorithm:	ensurefolders $(OBJ_FILES)
+	@echo ' ---> building $(LOG_INFO): "basic genetic algorithm library"'
 	@$(AR) cr $(NAME_TARGET) $(OBJ_FILES)
-	@echo '   --> built $(LOG_INFO): "machine learning library"'
+	@echo '   --> built $(LOG_INFO): "basic genetic algorithm library"'
 
 #
 
@@ -140,20 +140,20 @@ include $(shell test -d $(DIR_OBJ) && find $(DIR_OBJ) -name "*.dep")
 #
 
 clean:
-	@echo ' -> cleaning $(LOG_INFO): machine learning build file(s)'
+	@echo ' -> cleaning $(LOG_INFO): basic genetic algorithm build file(s)'
 	$(RM) $(DIR_OBJ)
-	@echo '   -> cleaned $(LOG_INFO): machine learning build file(s)'
+	@echo '   -> cleaned $(LOG_INFO): basic genetic algorithm build file(s)'
 
 fclean:	clean
-	@echo ' -> cleaning $(LOG_INFO): machine learning file(s)'
+	@echo ' -> cleaning $(LOG_INFO): basic genetic algorithm file(s)'
 	$(RM) $(NAME_TARGET)
-	@echo '   -> cleaned $(LOG_INFO): machine learning file(s)'
+	@echo '   -> cleaned $(LOG_INFO): basic genetic algorithm file(s)'
 
 re:	fclean all
 
 .PHONY: \
 			all \
-			machine-learning \
+			basic-genetic-algorithm \
 			clean \
 			fclean \
 			re

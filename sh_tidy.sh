@@ -1,6 +1,6 @@
 
 clang-tidy \
-  ./src/machine-learning/*.cpp \
+  ./src/basic-genetic-algorithm/*.cpp \
   -extra-arg=-std=c++17 \
   -- \
   -I$DIR_LIB_GERONIMO/src \
