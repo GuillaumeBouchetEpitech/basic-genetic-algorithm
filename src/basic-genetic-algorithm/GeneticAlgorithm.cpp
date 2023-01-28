@@ -297,6 +297,12 @@ AbstractGenome&
 GeneticAlgorithm::getGenome(std::size_t inIndex) {
   return _genomes.at(inIndex);
 }
+
+const AbstractGenome&
+GeneticAlgorithm::getGenome(std::size_t inIndex) const {
+  return _genomes.at(inIndex);
+}
+
 const AbstractGenome&
 GeneticAlgorithm::getBestGenome() const {
   return _eliteGenomes.at(0);

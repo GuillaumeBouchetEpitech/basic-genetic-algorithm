@@ -49,6 +49,7 @@ public: // getter(s)
   const NeuralNetworks& getNeuralNetworks() const;
   std::size_t getTotalGenomes() const;
   AbstractGenome& getGenome(std::size_t inIndex);
+  const AbstractGenome& getGenome(std::size_t inIndex) const;
   const AbstractGenome& getBestGenome() const;
   uint32_t getGenerationNumber() const;
 
