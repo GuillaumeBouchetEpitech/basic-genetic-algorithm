@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.0.3] - 2023-01-28
+### Changed
+- hotfix: genetic algorithm now support get a genome as const
+
 ## [0.0.2] - 2023-01-28
 ### Changed
 - feat: simpler/faster neural network
