@@ -86,7 +86,7 @@ endif
 
 CXXFLAGS += $(BUILD_FLAG)
 CXXFLAGS += -std=c++17
-CXXFLAGS += -Wall -W -Wextra -Wunused
+CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 CXXFLAGS += -I$(DIR_SRC)
 CXXFLAGS += -I$(DIR_LIB_GERONIMO_SRC)
 CXXFLAGS += -I$(DIR_LIB_GERONIMO_3RD_PARTY)

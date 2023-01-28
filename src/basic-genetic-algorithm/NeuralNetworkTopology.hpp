@@ -1,47 +1,46 @@
 
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 class NeuralNetworkTopology {
 public:
-  using HiddenLayers = std::vector<unsigned int>;
+  using HiddenLayers = std::vector<uint32_t>;
 
 private: // attributes
-  unsigned int _input = 0;
+  uint32_t _input = 0;
   HiddenLayers _hiddens;
-  unsigned int _output = 0;
+  uint32_t _output = 0;
 
   bool _useBias = false;
 
-  unsigned int _totalWeights = 0;
-  unsigned int _totalNeurons = 0;
+  uint32_t _totalWeights = 0;
+  uint32_t _totalNeurons = 0;
 
 public:
   NeuralNetworkTopology() = default;
 
   void init(
-    unsigned int input, const HiddenLayers& hiddens, unsigned int output,
+    uint32_t input, const HiddenLayers& hiddens, uint32_t output,
     bool useBias = true);
 
-  void
-  init(const std::initializer_list<unsigned int>& list, bool useBias = true);
+  void init(const std::initializer_list<uint32_t>& list, bool useBias = true);
 
 private:
   void _computeTotalWeights();
   void _computeTotalNeurons();
-  ;
 
 public:
   bool isValid() const;
 
 public:
-  unsigned int getInput() const;
-  unsigned int getOutput() const;
+  uint32_t getInput() const;
+  uint32_t getOutput() const;
   const HiddenLayers& getHiddens() const;
 
   bool isUsingBias() const;
 
-  unsigned int getTotalWeights() const;
-  unsigned int getTotalNeurons() const;
+  uint32_t getTotalWeights() const;
+  uint32_t getTotalNeurons() const;
 };

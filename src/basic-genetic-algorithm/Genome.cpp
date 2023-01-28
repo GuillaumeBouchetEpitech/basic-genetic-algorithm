@@ -1,7 +1,7 @@
 
 #include "Genome.hpp"
 
-unsigned int Genome::_currentId = 1;
+uint32_t Genome::_currentId = 1;
 
 // default ctor
 Genome::Genome() { id = Genome::_currentId++; }
@@ -10,7 +10,7 @@ Genome::Genome() { id = Genome::_currentId++; }
 Genome::Genome(const Genome& other) {
   id = other.id;
   fitness = other.fitness;
-  weights = other.weights; // reallocation
+  connectionsWeights = other.connectionsWeights; // reallocation
 }
 
 // move ctor
@@ -18,7 +18,7 @@ Genome::Genome(Genome&& other) {
   std::swap(id, other.id);
   std::swap(fitness, other.fitness);
 
-  weights = std::move(other.weights); // no reallocation
+  connectionsWeights = std::move(other.connectionsWeights); // no reallocation
 }
 
 // copy operator
@@ -26,7 +26,7 @@ Genome&
 Genome::operator=(const Genome& other) {
   id = other.id;
   fitness = other.fitness;
-  weights = other.weights; // reallocation
+  connectionsWeights = other.connectionsWeights; // reallocation
 
   return *this;
 }
@@ -40,7 +40,25 @@ Genome::operator=(Genome&& other) {
   std::swap(id, other.id);
   std::swap(fitness, other.fitness);
 
-  weights = std::move(other.weights); // no reallocation
+  connectionsWeights = std::move(other.connectionsWeights); // no reallocation
 
   return *this;
+}
+
+uint32_t
+Genome::getId() const {
+  return id;
+}
+float
+Genome::getFitness() const {
+  return fitness;
+}
+const std::vector<float>&
+Genome::getConnectionsWeights() const {
+  return connectionsWeights;
+}
+
+void
+Genome::rate(float inFitness) {
+  fitness = inFitness;
 }

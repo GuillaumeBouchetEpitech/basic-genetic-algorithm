@@ -9,14 +9,14 @@
 
 void
 NeuralNetworkTopology::init(
-  unsigned int input, const HiddenLayers& hiddens, unsigned int output,
+  uint32_t input, const HiddenLayers& hiddens, uint32_t output,
   bool useBias /*= true*/) {
   if (input == 0)
     D_THROW(
       std::invalid_argument,
       "received invalid number of inputs, input=" << input);
 
-  for (unsigned int value : hiddens)
+  for (uint32_t value : hiddens)
     if (value == 0)
       D_THROW(
         std::invalid_argument,
@@ -42,13 +42,13 @@ NeuralNetworkTopology::init(
 
 void
 NeuralNetworkTopology::init(
-  const std::initializer_list<unsigned int>& list, bool useBias /*= true*/) {
+  const std::initializer_list<uint32_t>& list, bool useBias /*= true*/) {
   if (list.size() < 2)
     D_THROW(
       std::invalid_argument,
       "received invalid number of layers, list=" << list.size());
 
-  for (unsigned int value : list)
+  for (uint32_t value : list)
     if (value == 0)
       D_THROW(
         std::invalid_argument,
@@ -78,8 +78,8 @@ NeuralNetworkTopology::init(
 
 void
 NeuralNetworkTopology::_computeTotalWeights() {
-  unsigned int prev_layer_num_neuron = _input;
-  for (unsigned int num_neuron : _hiddens) {
+  uint32_t prev_layer_num_neuron = _input;
+  for (uint32_t num_neuron : _hiddens) {
     _totalWeights += prev_layer_num_neuron * num_neuron;
     prev_layer_num_neuron = num_neuron;
   }
@@ -89,7 +89,7 @@ NeuralNetworkTopology::_computeTotalWeights() {
 void
 NeuralNetworkTopology::_computeTotalNeurons() {
   _totalNeurons = _input;
-  for (int size : _hiddens)
+  for (uint32_t size : _hiddens)
     _totalNeurons += size;
   _totalNeurons += _output;
 }
@@ -99,19 +99,19 @@ NeuralNetworkTopology::isValid() const {
   if (_input == 0 && _output == 0)
     return false;
 
-  for (unsigned int hiddenValue : _hiddens)
+  for (uint32_t hiddenValue : _hiddens)
     if (hiddenValue == 0)
       return false;
 
   return true;
 }
 
-unsigned int
+uint32_t
 NeuralNetworkTopology::getInput() const {
   return _input;
 }
 
-unsigned int
+uint32_t
 NeuralNetworkTopology::getOutput() const {
   return _output;
 }
@@ -126,12 +126,12 @@ NeuralNetworkTopology::isUsingBias() const {
   return _useBias;
 }
 
-unsigned int
+uint32_t
 NeuralNetworkTopology::getTotalWeights() const {
   return _totalWeights;
 }
 
-unsigned int
+uint32_t
 NeuralNetworkTopology::getTotalNeurons() const {
   return _totalNeurons;
 }

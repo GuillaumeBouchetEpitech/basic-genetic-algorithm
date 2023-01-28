@@ -8,19 +8,23 @@
 #include "geronimo/system/NonCopyable.hpp"
 
 #include <array>
+#include <cstdint>
 
 class GeneticAlgorithm : public gero::NonCopyable {
 public:
   struct Definition {
-    unsigned int totalGenomes = 0;
+    uint32_t totalGenomes = 0;
     NeuralNetworkTopology topology;
+	  uint32_t minimumMutations = 0;
   };
 
 private: // attributes
+  Definition _def;
+
   Genomes _genomes;
   Genomes _eliteGenomes; // keep X elites
 
-  unsigned int _currentGeneration = 1; // generation number
+  uint32_t _currentGeneration = 1; // generation number
 
   NeuralNetworkTopology _neuralNetworkTopology;
 
@@ -38,15 +42,16 @@ public: // method(s)
 private: // method(s)
   void _getBestGenomes(Genomes& output) const;
   void _reproduce(
-    const Genome& parentA, const Genome& parentB, Genome& offspring) const;
-  void _mutate(Genome& genome) const;
+    const Genome& inParentA, const Genome& inParentB, Genome& outOffspring) const;
+  void _mutate(Genome& inGenome, uint32_t inMinimumMutation = 0) const;
 
 public: // getter(s)
   const NeuralNetworks& getNeuralNetworks() const;
-  const Genomes& getGenomes() const;
-  const Genome& getBestGenome() const;
-  unsigned int getGenerationNumber() const;
+  std::size_t getTotalGenomes() const;
+  AbstractGenome& getGenome(std::size_t inIndex);
+  const AbstractGenome& getBestGenome() const;
+  uint32_t getGenerationNumber() const;
 
 public: // setter(s)
-  void rateGenome(unsigned int index, float fitness);
+  void rateGenome(std::size_t index, float fitness);
 };

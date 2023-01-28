@@ -1,5 +1,24 @@
 #!/bin/bash
 
+DIR_ROOT=$PWD
+
+#
+#
+#
+#
+#
+
+FIRST_ARG=$1
+
+case $FIRST_ARG in
+as-third-party-library)
+  AS_THIRD_PARTY_LIBRARY=yes
+  ;;
+*)
+  AS_THIRD_PARTY_LIBRARY=no
+  ;;
+esac
+
 #
 #
 #
@@ -10,7 +29,7 @@ echo ""
 echo "#################################################"
 echo "#                                               #"
 echo "# IF THIS SCRIPT FAIL -> TRY THOSE TWO COMMANDS #"
-echo "# -> 'chmod +x ./sh_everything.sh'              #"
+echo "# -> 'chmod u+x ./sh_everything.sh'              #"
 echo "# -> './sh_everything.sh'                       #"
 echo "#                                               #"
 echo "#################################################"
@@ -38,11 +57,35 @@ fi
 #
 #
 
-if [ -z "${DIR_LIB_GERONIMO}" ]; then
-  echo "the env var 'DIR_LIB_GERONIMO' is missing (see the README.md to install/set it)"
-  exit 1
-fi
-echo "the env var 'DIR_LIB_GERONIMO' was found"
+case $AS_THIRD_PARTY_LIBRARY in
+yes)
+
+  if [ -z "${DIR_LIB_GERONIMO}" ]; then
+    echo "the env var 'DIR_LIB_GERONIMO' is missing (see the README.md to install/set it)"
+    exit 1
+  fi
+  echo "the env var 'DIR_LIB_GERONIMO' was found"
+  ;;
+*)
+
+  echo "ensuring the thirdparties are installed"
+
+  chmod u+x ./sh_install_thirdparties.sh
+  ./sh_install_thirdparties.sh not-interactive
+
+  echo "building thirdparties libraries"
+  echo "  native version"
+
+  cd ./thirdparties/dependencies/geronimo
+
+  ./sh_everything.sh
+
+  export DIR_LIB_GERONIMO=$DIR_ROOT/thirdparties/dependencies/geronimo
+
+  cd $DIR_ROOT
+
+  ;;
+esac
 
 #
 #

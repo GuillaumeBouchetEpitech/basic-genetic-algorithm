@@ -3,10 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/src/**",
-                "./thirdparties/dependencies/geronimo/src/**",
-                "./thirdparties/dependencies/geronimo/thirdparties/**",
-                "${EMSDK}/upstream/emscripten/system/include/**"
+                "./src/**",
+                "../thirdparties/dependencies/geronimo/src/**",
+                "../thirdparties/dependencies/geronimo/thirdparties/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang++",

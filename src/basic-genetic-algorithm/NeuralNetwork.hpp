@@ -11,34 +11,33 @@
 class NeuralNetwork : public gero::NonCopyable {
 private: // internal structures
   struct Neuron {
-    std::vector<float> connectionsWeights;
     float value;
+    std::size_t startNeuron;
+    std::size_t startWeight;
+    std::size_t layerSize;
   };
 
-  using Layer = std::vector<Neuron>;
-  using Layers = std::vector<Layer>;
-
 private: // attributes
-  Layers _layers;
-
-  const NeuralNetworkTopology& _topology;
+  NeuralNetworkTopology _topology;
+  std::vector<Neuron> _neurons;
+  std::vector<float> _connectionsWeights;
 
 public: // ctor/dtor
-  NeuralNetwork(const NeuralNetworkTopology& topology);
+  NeuralNetwork(const NeuralNetworkTopology& inTopology);
 
 public: // methods
   void compute(
     const std::vector<float>& inputValues, std::vector<float>& outputValues);
 
 public: // setter
-  void setWeights(const std::vector<float>& inputWeights);
+  void setConnectionsWeights(const std::vector<float>& inWeights);
 
 public: // getter
-  void getWeights(std::vector<float>& outputWeights) const;
+  void getConnectionsWeights(std::vector<float>& outWeights) const;
   const NeuralNetworkTopology& getTopology() const;
 
-  void getNeuronsValues(std::vector<float>& neuronsOutput);
-  void setNeuronsValues(const std::vector<float>& neuronsvalues);
+  void getNeuronsValues(std::vector<float>& outNeuronsOutputValues);
+  void setNeuronsValues(const std::vector<float>& inNeuronsValues);
 };
 
 using NeuralNetworks = std::vector<std::shared_ptr<NeuralNetwork>>;

@@ -9,41 +9,42 @@
 #include <iomanip>   // <= std::fixed / setprecision
 
 void
-GeneticAlgorithm::initialise(const Definition& def) {
-  if (def.totalGenomes < 10)
+GeneticAlgorithm::initialise(const Definition& inDef) {
+  _def = inDef;
+
+  if (_def.totalGenomes < 10)
     D_THROW(
       std::invalid_argument, "received invalid number of genomes"
-                               << ", input=" << def.totalGenomes
+                               << ", input=" << _def.totalGenomes
                                << ", expected >= 10");
 
-  if (!def.topology.isValid())
+  if (!_def.topology.isValid())
     D_THROW(std::invalid_argument, "received invalid topology");
 
   //
 
-  _neuralNetworkTopology = def.topology;
+  _neuralNetworkTopology = _def.topology;
 
   // set the genomes and their neural network
 
-  _genomes.resize(def.totalGenomes);
+  _genomes.resize(_def.totalGenomes);
 
-  unsigned int totalElites = def.totalGenomes * 0.1f; // 10%
-  if (totalElites < 5)
-    totalElites = 5;
+  const uint32_t totalElites =
+    std::max(5U, uint32_t(float(_def.totalGenomes) * 0.1f)); // 10%
   _eliteGenomes.resize(totalElites);
 
-  _neuralNetworks.reserve(def.totalGenomes); // pre-allocate
+  _neuralNetworks.reserve(_def.totalGenomes); // pre-allocate
 
   gero::rng::RNG::ensureRandomSeed();
 
   for (auto& genome : _genomes) {
-    genome.weights.resize(_neuralNetworkTopology.getTotalWeights());
+    genome.connectionsWeights.resize(_neuralNetworkTopology.getTotalWeights());
 
-    for (float& weight : genome.weights)
+    for (float& weight : genome.connectionsWeights)
       weight = gero::rng::RNG::getRangedValue(-1.0f, 1.0f);
 
     auto newNeuralNet = std::make_shared<NeuralNetwork>(_neuralNetworkTopology);
-    newNeuralNet->setWeights(genome.weights);
+    newNeuralNet->setConnectionsWeights(genome.connectionsWeights);
     _neuralNetworks.push_back(newNeuralNet);
   }
 }
@@ -59,8 +60,11 @@ GeneticAlgorithm::breedPopulation() {
   const auto& latestBestGenome = latestBestGenomes.front();
 
   const auto& oldBestGenome = _eliteGenomes.front();
-  bool isSmarterGeneration = (latestBestGenome.fitness > oldBestGenome.fitness);
-  bool isStallingGeneration =
+  const bool isSmarterGeneration = (latestBestGenome.fitness > oldBestGenome.fitness);
+
+#if 0
+
+  const bool isStallingGeneration =
     (latestBestGenome.fitness == oldBestGenome.fitness);
 
   D_MYLOG(
@@ -71,6 +75,8 @@ GeneticAlgorithm::breedPopulation() {
     << " [latest=" << latestBestGenome.fitness << "]"
     << ", diff=" << (isSmarterGeneration ? "+" : "")
     << (latestBestGenome.fitness - oldBestGenome.fitness));
+
+#endif
 
   { // refresh the elite genomes internal array
 
@@ -145,14 +151,14 @@ GeneticAlgorithm::breedPopulation() {
       };
     std::sort(parentsPairsGenomes.begin(), parentsPairsGenomes.end(), cmpFunc);
 
-    int maxOffspring = int(_genomes.size() * 0.9f);
+    int32_t totalOffspringLeft = int32_t(float(_genomes.size()) * 0.9f);
     for (const auto& parentPair : parentsPairsGenomes) {
       // stop here if the offsprings container is already full
       if (offsprings.size() >= _genomes.size())
         break;
 
       // stop here if the max amount of children is reached
-      if (maxOffspring-- <= 0)
+      if (totalOffspringLeft-- <= 0)
         break;
 
       const auto& parentGenomeA = latestBestGenomes.at(parentPair.parentA);
@@ -161,7 +167,7 @@ GeneticAlgorithm::breedPopulation() {
       Genome newOffspring;
 
       _reproduce(parentGenomeA, parentGenomeB, newOffspring);
-      _mutate(newOffspring);
+      _mutate(newOffspring, _def.minimumMutations);
 
       // move, no realloc of the weights
       offsprings.push_back(std::move(newOffspring));
@@ -174,14 +180,14 @@ GeneticAlgorithm::breedPopulation() {
     // if there is any space left: add some random genome.
     std::size_t remainingOffsprings = _genomes.size() - offsprings.size();
 
-    const unsigned int totalWeights = _neuralNetworkTopology.getTotalWeights();
+    const uint32_t totalWeights = _neuralNetworkTopology.getTotalWeights();
 
     for (std::size_t ii = 0; ii < remainingOffsprings; ++ii) {
       Genome newGenome;
 
-      newGenome.weights.reserve(totalWeights); // pre-allocate
-      for (unsigned int jj = 0; jj < totalWeights; ++jj)
-        newGenome.weights.push_back(
+      newGenome.connectionsWeights.reserve(totalWeights); // pre-allocate
+      for (uint32_t jj = 0; jj < totalWeights; ++jj)
+        newGenome.connectionsWeights.push_back(
           gero::rng::RNG::getRangedValue(-1.0f, 1.0f));
 
       // move, no realloc of the weights
@@ -193,7 +199,7 @@ GeneticAlgorithm::breedPopulation() {
   _genomes = std::move(offsprings); // move, no realloc of the vector content
 
   for (std::size_t ii = 0; ii < _genomes.size(); ++ii)
-    _neuralNetworks.at(ii)->setWeights(_genomes.at(ii).weights);
+    _neuralNetworks.at(ii)->setConnectionsWeights(_genomes.at(ii).connectionsWeights);
 
   ++_currentGeneration;
 
@@ -228,40 +234,52 @@ GeneticAlgorithm::_getBestGenomes(Genomes& output) const {
 
 void
 GeneticAlgorithm::_reproduce(
-  const Genome& parentA, const Genome& parentB, Genome& offspring) const {
+  const Genome& inParentA, const Genome& inParentB, Genome& outOffspring) const {
   // default of 50/50 chances for both parents
-  int chancesForParentA = 50; // 50%
+  int32_t chancesForParentA = 50; // 50%
 
   // 70/30 chances for the fittest parent
-  if (parentA.fitness > parentB.fitness)
-    chancesForParentA = 70; // 70%
-  else if (parentA.fitness < parentB.fitness)
-    chancesForParentA = 30; // 30%
+  if (inParentA.fitness > inParentB.fitness)
+    chancesForParentA = 60; // 60%
+  else if (inParentA.fitness < inParentB.fitness)
+    chancesForParentA = 40; // 40%
 
   // crossover
 
-  const unsigned int totalWeights = _neuralNetworkTopology.getTotalWeights();
+  const uint32_t totalWeights = _neuralNetworkTopology.getTotalWeights();
 
-  offspring.weights.clear();
-  offspring.weights.reserve(totalWeights); // pre-allocate
+  outOffspring.connectionsWeights.clear();
+  outOffspring.connectionsWeights.reserve(totalWeights); // pre-allocate
 
-  for (unsigned int ii = 0; ii < totalWeights; ++ii) {
+  for (uint32_t ii = 0; ii < totalWeights; ++ii) {
     if (gero::rng::RNG::getRangedValue(0, 100) < chancesForParentA)
-      offspring.weights.push_back(parentA.weights.at(ii));
+      outOffspring.connectionsWeights.push_back(inParentA.connectionsWeights.at(ii));
     else
-      offspring.weights.push_back(parentB.weights.at(ii));
+      outOffspring.connectionsWeights.push_back(inParentB.connectionsWeights.at(ii));
   }
 }
 
 void
-GeneticAlgorithm::_mutate(Genome& genome) const {
-  constexpr int mutationMaxChance = 10;     // 10%
+GeneticAlgorithm::_mutate(Genome& inGenome, uint32_t inMinimumMutation /* = 0 */) const {
+  constexpr int32_t mutationMaxChance = 20; // 20%
   constexpr float mutationMaxEffect = 0.2f; // 20% x 2 = 40%
 
-  for (float& weight : genome.weights)
-    if (gero::rng::RNG::getRangedValue(0, 100) < mutationMaxChance)
-      weight +=
-        gero::rng::RNG::getRangedValue(-mutationMaxEffect, +mutationMaxEffect);
+	uint32_t totalMutation = 0;
+
+  do {
+
+    for (float& weight : inGenome.connectionsWeights)
+    {
+      if (gero::rng::RNG::getRangedValue(0, 100) < mutationMaxChance)
+      {
+        weight +=
+          gero::rng::RNG::getRangedValue(-mutationMaxEffect, +mutationMaxEffect);
+
+        totalMutation += 1;
+      }
+    }
+  }
+  while (totalMutation < inMinimumMutation);
 }
 
 //
@@ -271,17 +289,20 @@ GeneticAlgorithm::getNeuralNetworks() const {
   return _neuralNetworks;
 }
 
-const Genomes&
-GeneticAlgorithm::getGenomes() const {
-  return _genomes;
+std::size_t
+GeneticAlgorithm::getTotalGenomes() const {
+  return _genomes.size();
 }
-
-const Genome&
+AbstractGenome&
+GeneticAlgorithm::getGenome(std::size_t inIndex) {
+  return _genomes.at(inIndex);
+}
+const AbstractGenome&
 GeneticAlgorithm::getBestGenome() const {
   return _eliteGenomes.at(0);
 }
 
-unsigned int
+uint32_t
 GeneticAlgorithm::getGenerationNumber() const {
   return _currentGeneration;
 }
@@ -289,7 +310,7 @@ GeneticAlgorithm::getGenerationNumber() const {
 //
 
 void
-GeneticAlgorithm::rateGenome(unsigned int index, float fitness) {
+GeneticAlgorithm::rateGenome(std::size_t index, float fitness) {
   if (_genomes.empty())
     D_THROW(std::runtime_error, "not initialised");
 
