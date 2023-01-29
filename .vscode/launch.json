@@ -15,7 +15,11 @@
         // "--gtest_filter=*test_logic_gate___yes", // pass
         // "--gtest_filter=*test_logic_gate___no", // pass
 
-        "--gtest_filter=*test_logic_gate___and", // ???
+        // "--gtest_filter=*test_logic_gate___and", // ???
+
+
+        "--gtest_filter=*test_continuous_genetic_algorithm.test_logic_gate___yes", // ???
+
 
       ],
       "stopAtEntry": false,

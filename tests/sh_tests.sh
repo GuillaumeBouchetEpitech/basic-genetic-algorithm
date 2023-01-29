@@ -33,8 +33,8 @@ reset
 rm -rf obj
 make -j6
 
-./bin/exec
-# valgrind --leak-check=full ./bin/exec
+# ./bin/exec
+valgrind --leak-check=full ./bin/exec
 
 exit 0
 

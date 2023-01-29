@@ -82,6 +82,11 @@ void runTest(
   }
   while (true);
 
+
+  D_MYERR("genAlgo.getGenerationNumber() " << genAlgo.getGenerationNumber());
+  D_MYERR("total genomes processed " << genAlgo.getGenerationNumber() * genAlgoDef.totalGenomes);
+
+
   {
     const AbstractGenome& best = genAlgo.getBestGenome();
 

@@ -138,6 +138,50 @@ NeuralNetwork::NeuralNetwork(const NeuralNetworkTopology& inTopology)
 
 }
 
+NeuralNetwork::NeuralNetwork(const NeuralNetwork& other)
+{
+  if (&other == this)
+    return;
+
+  _topology = other._topology;
+  _neurons = other._neurons;
+  _connectionsWeights = other._connectionsWeights;
+}
+
+NeuralNetwork::NeuralNetwork(NeuralNetwork&& other)
+{
+  if (&other == this)
+    return;
+
+  _topology = std::move(other._topology);
+  _neurons = std::move(other._neurons);
+  _connectionsWeights = std::move(other._connectionsWeights);
+}
+
+NeuralNetwork& NeuralNetwork::operator=(const NeuralNetwork& other)
+{
+  if (&other == this)
+    return *this;
+
+  _topology = other._topology;
+  _neurons = other._neurons;
+  _connectionsWeights = other._connectionsWeights;
+
+  return *this;
+}
+
+NeuralNetwork& NeuralNetwork::operator=(NeuralNetwork&& other)
+{
+  if (&other == this)
+    return *this;
+
+  _topology = std::move(other._topology);
+  _neurons = std::move(other._neurons);
+  _connectionsWeights = std::move(other._connectionsWeights);
+
+  return *this;
+}
+
 void
 NeuralNetwork::compute(
   const std::vector<float>& inInputValues,

@@ -18,6 +18,9 @@ public:
 	  uint32_t minimumMutations = 0;
   };
 
+private:
+  using Genomes = std::vector<Genome>;
+
 private: // attributes
   Definition _def;
 
@@ -25,8 +28,6 @@ private: // attributes
   Genomes _eliteGenomes; // keep X elites
 
   uint32_t _currentGeneration = 1; // generation number
-
-  NeuralNetworkTopology _neuralNetworkTopology;
 
   NeuralNetworks _neuralNetworks;
 
@@ -40,10 +41,7 @@ public: // method(s)
   bool breedPopulation();
 
 private: // method(s)
-  void _getBestGenomes(Genomes& output) const;
-  void _reproduce(
-    const Genome& inParentA, const Genome& inParentB, Genome& outOffspring) const;
-  void _mutate(Genome& inGenome, uint32_t inMinimumMutation = 0) const;
+  void _getBestGenomes(Genomes& outGenomes) const;
 
 public: // getter(s)
   const NeuralNetworks& getNeuralNetworks() const;
@@ -54,5 +52,5 @@ public: // getter(s)
   uint32_t getGenerationNumber() const;
 
 public: // setter(s)
-  void rateGenome(std::size_t index, float fitness);
+  void rateGenome(std::size_t inIndex, float inFitness);
 };

@@ -10,7 +10,7 @@ public:
   virtual ~AbstractGenome() = default;
 
 public:
-  virtual uint32_t getId() const = 0;
+  virtual uint64_t getId() const = 0;
   virtual float getFitness() const = 0;
   virtual const std::vector<float>& getConnectionsWeights() const = 0;
 
@@ -20,7 +20,7 @@ public:
 
 class Genome : public AbstractGenome {
 private:
-  static uint32_t _currentId;
+  static uint64_t _currentId;
 
 public:
   Genome();
@@ -31,12 +31,14 @@ public:
   virtual ~Genome() = default;
 
 public:
-  uint32_t id = 0;
+  uint64_t parentIdA = 0UL;
+  uint64_t parentIdB = 0UL;
+  uint64_t id = 0UL;
   float fitness = 0.0f;
   std::vector<float> connectionsWeights;
 
 public:
-  virtual uint32_t getId() const override;
+  virtual uint64_t getId() const override;
   virtual float getFitness() const override;
   virtual const std::vector<float>& getConnectionsWeights() const override;
 
@@ -44,4 +46,4 @@ public:
   virtual void rate(float inFitness) override;
 };
 
-using Genomes = std::vector<Genome>;
+// using Genomes = std::vector<Genome>;

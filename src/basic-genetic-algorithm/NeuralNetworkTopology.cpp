@@ -7,6 +7,70 @@
 #include <exception>
 #include <stdexcept>
 
+NeuralNetworkTopology::NeuralNetworkTopology(const NeuralNetworkTopology& other)
+{
+  if (&other == this)
+    return;
+
+  _input = other._input;
+  _hiddens = other._hiddens;
+  _output = other._output;
+
+  _useBias = other._useBias;
+
+  _totalWeights = other._totalWeights;
+  _totalNeurons = other._totalNeurons;
+}
+
+NeuralNetworkTopology::NeuralNetworkTopology(NeuralNetworkTopology&& other)
+{
+  if (&other == this)
+    return;
+
+  std::swap(_input, other._input);
+  _hiddens = std::move(other._hiddens);
+  std::swap(_output, other._output);
+
+  std::swap(_useBias, other._useBias);
+
+  std::swap(_totalWeights, other._totalWeights);
+  std::swap(_totalNeurons, other._totalNeurons);
+}
+
+NeuralNetworkTopology& NeuralNetworkTopology::operator=(const NeuralNetworkTopology& other)
+{
+  if (&other == this)
+    return *this;
+
+  _input = other._input;
+  _hiddens = other._hiddens;
+  _output = other._output;
+
+  _useBias = other._useBias;
+
+  _totalWeights = other._totalWeights;
+  _totalNeurons = other._totalNeurons;
+
+  return *this;
+}
+
+NeuralNetworkTopology& NeuralNetworkTopology::operator=(NeuralNetworkTopology&& other)
+{
+  if (&other == this)
+    return *this;
+
+  std::swap(_input, other._input);
+  _hiddens = std::move(other._hiddens);
+  std::swap(_output, other._output);
+
+  std::swap(_useBias, other._useBias);
+
+  std::swap(_totalWeights, other._totalWeights);
+  std::swap(_totalNeurons, other._totalNeurons);
+
+  return *this;
+}
+
 void
 NeuralNetworkTopology::init(
   uint32_t input, const HiddenLayers& hiddens, uint32_t output,

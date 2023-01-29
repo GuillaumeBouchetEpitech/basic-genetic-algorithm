@@ -24,6 +24,11 @@ private: // attributes
 
 public: // ctor/dtor
   NeuralNetwork(const NeuralNetworkTopology& inTopology);
+  NeuralNetwork(const NeuralNetwork& other);
+  NeuralNetwork(NeuralNetwork&& other);
+  NeuralNetwork& operator=(const NeuralNetwork& other);
+  NeuralNetwork& operator=(NeuralNetwork&& other);
+  virtual ~NeuralNetwork() = default;
 
 public: // methods
   void compute(

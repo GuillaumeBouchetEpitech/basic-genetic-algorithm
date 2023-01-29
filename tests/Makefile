@@ -22,8 +22,13 @@ NAME_LIB_BASIC_GENTIC_ALGORITHM=	$(DIR_LIB_BASIC_GENTIC_ALGORITHM)/lib/native/li
 
 SRC+= \
 	$(wildcard \
-		$(DIR_SRC)/*.cpp \
+		$(DIR_SRC)/genetic_algorithm/*.cpp \
 	)
+
+# SRC+= \
+# 	$(wildcard \
+# 		$(DIR_SRC)/continuous_genetic_algorithm/*.cpp \
+# 	)
 
 OBJ=		$(patsubst %.cpp, $(DIR_OBJ)/%.o, $(SRC))
 

@@ -17,7 +17,7 @@ esac
 DIR_DEPENDENCIES=$PWD/thirdparties/dependencies
 
 declare -a all_dependencies_array=(
-  "GERONIMO;geronimo;GuillaumeBouchetEpitech/geronimo;v0.0.3"
+  "GERONIMO;geronimo;GuillaumeBouchetEpitech/geronimo;v0.0.4"
 )
 
 mkdir -p $DIR_DEPENDENCIES

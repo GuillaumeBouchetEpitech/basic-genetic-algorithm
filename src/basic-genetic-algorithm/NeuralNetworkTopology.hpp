@@ -20,6 +20,11 @@ private: // attributes
 
 public:
   NeuralNetworkTopology() = default;
+  NeuralNetworkTopology(const NeuralNetworkTopology& other);
+  NeuralNetworkTopology(NeuralNetworkTopology&& other);
+  NeuralNetworkTopology& operator=(const NeuralNetworkTopology& other);
+  NeuralNetworkTopology& operator=(NeuralNetworkTopology&& other);
+  virtual ~NeuralNetworkTopology() = default;
 
   void init(
     uint32_t input, const HiddenLayers& hiddens, uint32_t output,

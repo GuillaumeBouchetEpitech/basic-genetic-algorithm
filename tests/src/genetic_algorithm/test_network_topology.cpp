@@ -50,6 +50,6 @@ TEST(test_genetic_algorithm, test_topology__5_10_10_3) {
   ASSERT_EQ(neuralNetworkTopology.getHiddens().at(1), 10);
   ASSERT_EQ(neuralNetworkTopology.getOutput(), 3);
   ASSERT_EQ(neuralNetworkTopology.getTotalNeurons(), 28);
-  ASSERT_EQ(neuralNetworkTopology.getTotalWeights(), 50 + 100 + 30);
+  ASSERT_EQ(neuralNetworkTopology.getTotalWeights(), (5 * 10) + (10 * 10) + (10 * 3));
 }
 

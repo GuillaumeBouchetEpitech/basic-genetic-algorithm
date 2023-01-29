@@ -4,6 +4,7 @@
 #include "basic-genetic-algorithm/GeneticAlgorithm.hpp"
 
 #include "geronimo/system/TraceLogger.hpp"
+#include "geronimo/system/getStreamStr.hpp"
 
 // #include "LogicGatesDemo.hpp"
 
