@@ -3,6 +3,7 @@
 
 #include "basic-genetic-algorithm/NeuralNetwork.hpp"
 #include "basic-genetic-algorithm/Genome.hpp"
+#include "basic-genetic-algorithm/GenomeHelpers.hpp"
 
 #include "GenomesAncestor.hpp"
 
@@ -13,42 +14,50 @@
 #include <array>
 #include <cstdint>
 #include <set>
+#include <functional>
+
 
 class ContinuousSpeciatedGeneticAlgorithm : public gero::NonCopyable {
+
 public:
+
   struct Definition {
-    // uint32_t totalGenomes = 0;
+
+    uint32_t genomePoolSize = 128;
+
+    NeuralNetworkTopology topology;
 
     uint32_t initalTotalAncestors = 32;
     uint32_t initalDiversityAttempt = 10;
+    uint32_t maxTotalAncestors = 50;
 
-    NeuralNetworkTopology topology;
-	  uint32_t minimumMutations = 0;
-    float weightCoef = 0.2f;
+    uint32_t minimumMutations = 0;
+    float mutationMaxChance = 0.2f;
+    float mutationMaxEffect = 0.2f;
+    float ancestorsWeightCoef = 0.2f;
     float reusedAncestorScorePenalty = 0.2f;
+    float randomGenomeChance = 0.1f;
+
+    GenomeHelpers::GetRandomCallback getRandomCallback;
+
+    void validate() const;
   };
 
+
+public:
   using GenomesPool = gero::weak_ref_data_pool<Genome, Genome, 256, false>;
   using GenomeWeakRef = GenomesPool::weak_ref;
 
 public:
 
-  using GenomesAncestors = gero::dynamic_heap_array<GenomesAncestor, GenomesAncestor, 1024>;
+  using GenomesAncestors = gero::dynamic_heap_array<GenomesAncestor, GenomesAncestor, 128>;
 
 private: // attributes
   Definition _def;
-
   GenomesPool _liveGenomesPool;
-
   GenomesAncestors _genomesAncestors;
-
   Genome _bestGenome;
-
   uint32_t _totalCompletedGenomes = 0;
-
-  uint32_t _timeSinceLastDefrag = 10;
-  // int32_t _startIndexSinceLastDefrag = -1;
-
   uint64_t _currentAncestorId = 1UL;
 
 public: // ctor/dtor

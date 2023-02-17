@@ -94,6 +94,8 @@ void GenomesAncestor::addNewElite(const Genome& inGenome, float inReusedAncestor
 
       while (elites.size() > 3)
         elites.pop_back();
+
+      totalReused = 0;
     }
     else
     {
@@ -110,7 +112,7 @@ void GenomesAncestor::computePriorityScore(float inReusedAncestorScorePenalty)
 }
 
 
-const Genome& GenomesAncestor::getGenome() const
+const Genome& GenomesAncestor::getGenome(const GenomeHelpers::GetRandomCallback& randomCallback) const
 {
   if (elites.empty())
     return genome;
@@ -118,7 +120,7 @@ const Genome& GenomesAncestor::getGenome() const
   if (elites.size() == 1)
     return elites.front();
 
-  const int index = gero::rng::RNG::getRangedValue(0, int(elites.size()));
+  const int index = int(randomCallback() * float(elites.size()));
   return elites.at(std::size_t(index));
 }
 
