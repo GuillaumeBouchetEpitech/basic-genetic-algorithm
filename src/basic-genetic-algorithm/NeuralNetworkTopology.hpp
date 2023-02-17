@@ -9,11 +9,11 @@ public:
   using HiddenLayers = std::vector<uint32_t>;
 
 private: // attributes
-  uint32_t _input = 0;
-  HiddenLayers _hiddens;
-  uint32_t _output = 0;
+  uint32_t _inputLayerSize = 0;
+  HiddenLayers _hiddenLayers;
+  uint32_t _outputLayerSize = 0;
 
-  bool _useBias = false;
+  bool _isUsingBias = false;
 
   uint32_t _totalWeights = 0;
   uint32_t _totalNeurons = 0;
@@ -27,7 +27,7 @@ public:
   virtual ~NeuralNetworkTopology() = default;
 
   void init(
-    uint32_t input, const HiddenLayers& hiddens, uint32_t output,
+    uint32_t inputLayerSize, const HiddenLayers& hiddenLayers, uint32_t outputLayerSize,
     bool useBias = true);
 
   void init(const std::initializer_list<uint32_t>& list, bool useBias = true);
@@ -37,15 +37,17 @@ private:
   void _computeTotalNeurons();
 
 public:
+  void validate() const;
   bool isValid() const;
 
 public:
-  uint32_t getInput() const;
-  uint32_t getOutput() const;
-  const HiddenLayers& getHiddens() const;
+  uint32_t getInputLayerSize() const;
+  uint32_t getOutputLayerSize() const;
+  const HiddenLayers& getHiddenLayers() const;
 
   bool isUsingBias() const;
 
+  uint32_t getTotalLayers() const;
   uint32_t getTotalWeights() const;
   uint32_t getTotalNeurons() const;
 };
