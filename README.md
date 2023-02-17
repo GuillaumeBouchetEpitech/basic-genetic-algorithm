@@ -8,9 +8,10 @@
     - [Main Logic](#main-logic)
 - [Dependencies](#dependencies)
   - [Dependency: Emscripten 3.1.26 (for web-wasm build)](#dependency-emscripten-3126-for-web-wasm-build)
-  - [Dependency: Geronimo 0.0.4](#dependency-geronimo-004)
+  - [Dependency: Geronimo 0.0.8](#dependency-geronimo-008)
 - [How to Build](#how-to-build)
   - [Build Everything (will skip web-wasm if emscripten is absent)](#build-everything-will-skip-web-wasm-if-emscripten-is-absent)
+- [Project(s) using it](#projects-using-it)
 - [Thanks for watching!](#thanks-for-watching)
 
 ## Diagrams
@@ -82,9 +83,11 @@ cd emsdk
 em++ --clear-cache
 ```
 
-## Dependency: Geronimo 0.0.4
+## Dependency: Geronimo 0.0.8
 
-This dependency will be donwloaded and built with the `Build Everything` method below
+[Github Link](https://github.com/GuillaumeBouchetEpitech/geronimo)
+
+This dependency will be downloaded and built with the `Build Everything` method below
 
 # How to Build
 
@@ -96,5 +99,9 @@ chmod u+x ./sh_everything.sh
 # will tell if a dependency is missing
 # will skip the web-wasm build if emscripten is not detected
 ```
+
+# Project(s) using it
+
+- Self Learning 3d Cars [Github Link](https://github.com/GuillaumeBouchetEpitech/self-learning-3d-cars)
 
 # Thanks for watching!
