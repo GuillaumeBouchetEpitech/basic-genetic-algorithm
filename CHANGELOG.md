@@ -1,6 +1,17 @@
 
 # Changelog
 
+## [0.0.5] - 2023-02-17
+### Changed
+- test: updated tests
+- chore: updated experimental continuous genetic algorithm
+- chore: missing file....
+- feat: basic genetic algorithm refactor
+- chore: updated c_cpp_properties.json
+- chore: updated readme
+- feat: switch to geronimo 0.0.8
+- chore: cleaner Makefile
+
 ## [0.0.4] - 2023-01-29
 ### Changed
 - chore: refactor the logic
