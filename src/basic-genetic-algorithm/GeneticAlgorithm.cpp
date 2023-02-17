@@ -1,8 +1,6 @@
 
 #include "GeneticAlgorithm.hpp"
 
-#include "GenomeHelpers.hpp"
-
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
 #include "geronimo/system/rng/RandomNumberGenerator.hpp"
@@ -23,6 +21,9 @@ GeneticAlgorithm::initialise(const Definition& inDef) {
   if (!_def.topology.isValid())
     D_THROW(std::invalid_argument, "received invalid topology");
 
+  if (!_def.getRandomCallback)
+    D_THROW(std::invalid_argument, "missing random callback");
+
   //
 
   // set the genomes and their neural network
@@ -33,17 +34,15 @@ GeneticAlgorithm::initialise(const Definition& inDef) {
     std::max(5U, uint32_t(float(_def.totalGenomes) * 0.1f)); // 10%
   _eliteGenomes.resize(totalElites);
 
-  _neuralNetworks.reserve(_def.totalGenomes); // pre-allocate
-
   gero::rng::RNG::ensureRandomSeed();
 
   for (auto& currGenome : _genomes) {
 
-    GenomeHelpers::randomiseConnectionWeights(currGenome, _def.topology.getTotalWeights());
+    GenomeHelpers::randomizeConnectionWeights(
+      currGenome,
+      _def.topology.getTotalWeights(),
+      _def.getRandomCallback);
 
-    auto newNeuralNet = std::make_shared<NeuralNetwork>(_def.topology);
-    newNeuralNet->setConnectionsWeights(currGenome.connectionsWeights);
-    _neuralNetworks.push_back(newNeuralNet);
   }
 }
 
@@ -164,8 +163,19 @@ GeneticAlgorithm::breedPopulation() {
 
       Genome newOffspring;
 
-      GenomeHelpers::reproduce(parentGenomeA, parentGenomeB, _def.topology.getTotalWeights(), newOffspring);
-      GenomeHelpers::mutate(newOffspring, _def.minimumMutations);
+      GenomeHelpers::reproduce(
+        parentGenomeA,
+        parentGenomeB,
+        _def.topology.getTotalWeights(),
+        newOffspring,
+        _def.getRandomCallback);
+
+      GenomeHelpers::mutate(
+        newOffspring,
+        _def.minimumMutations,
+        _def.mutationMaxChance,
+        _def.mutationMaxEffect,
+        _def.getRandomCallback);
 
       // move, no realloc of the weights
       // offsprings.push_back(std::move(newOffspring));
@@ -196,9 +206,6 @@ GeneticAlgorithm::breedPopulation() {
   } // diversity: add random genomes
 
   _genomes = std::move(offsprings); // move, no realloc of the vector content
-
-  for (std::size_t ii = 0; ii < _genomes.size(); ++ii)
-    _neuralNetworks.at(ii)->setConnectionsWeights(_genomes.at(ii).connectionsWeights);
 
   ++_currentGeneration;
 
@@ -232,11 +239,6 @@ GeneticAlgorithm::_getBestGenomes(Genomes& outGenomes) const {
 }
 
 //
-
-const NeuralNetworks&
-GeneticAlgorithm::getNeuralNetworks() const {
-  return _neuralNetworks;
-}
 
 std::size_t
 GeneticAlgorithm::getTotalGenomes() const {

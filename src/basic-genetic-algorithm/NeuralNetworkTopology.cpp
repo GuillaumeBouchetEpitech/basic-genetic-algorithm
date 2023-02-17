@@ -12,11 +12,11 @@ NeuralNetworkTopology::NeuralNetworkTopology(const NeuralNetworkTopology& other)
   if (&other == this)
     return;
 
-  _input = other._input;
-  _hiddens = other._hiddens;
-  _output = other._output;
+  _inputLayerSize = other._inputLayerSize;
+  _hiddenLayers = other._hiddenLayers;
+  _outputLayerSize = other._outputLayerSize;
 
-  _useBias = other._useBias;
+  _isUsingBias = other._isUsingBias;
 
   _totalWeights = other._totalWeights;
   _totalNeurons = other._totalNeurons;
@@ -27,11 +27,11 @@ NeuralNetworkTopology::NeuralNetworkTopology(NeuralNetworkTopology&& other)
   if (&other == this)
     return;
 
-  std::swap(_input, other._input);
-  _hiddens = std::move(other._hiddens);
-  std::swap(_output, other._output);
+  std::swap(_inputLayerSize, other._inputLayerSize);
+  _hiddenLayers = std::move(other._hiddenLayers);
+  std::swap(_outputLayerSize, other._outputLayerSize);
 
-  std::swap(_useBias, other._useBias);
+  std::swap(_isUsingBias, other._isUsingBias);
 
   std::swap(_totalWeights, other._totalWeights);
   std::swap(_totalNeurons, other._totalNeurons);
@@ -42,11 +42,11 @@ NeuralNetworkTopology& NeuralNetworkTopology::operator=(const NeuralNetworkTopol
   if (&other == this)
     return *this;
 
-  _input = other._input;
-  _hiddens = other._hiddens;
-  _output = other._output;
+  _inputLayerSize = other._inputLayerSize;
+  _hiddenLayers = other._hiddenLayers;
+  _outputLayerSize = other._outputLayerSize;
 
-  _useBias = other._useBias;
+  _isUsingBias = other._isUsingBias;
 
   _totalWeights = other._totalWeights;
   _totalNeurons = other._totalNeurons;
@@ -59,11 +59,11 @@ NeuralNetworkTopology& NeuralNetworkTopology::operator=(NeuralNetworkTopology&& 
   if (&other == this)
     return *this;
 
-  std::swap(_input, other._input);
-  _hiddens = std::move(other._hiddens);
-  std::swap(_output, other._output);
+  std::swap(_inputLayerSize, other._inputLayerSize);
+  _hiddenLayers = std::move(other._hiddenLayers);
+  std::swap(_outputLayerSize, other._outputLayerSize);
 
-  std::swap(_useBias, other._useBias);
+  std::swap(_isUsingBias, other._isUsingBias);
 
   std::swap(_totalWeights, other._totalWeights);
   std::swap(_totalNeurons, other._totalNeurons);
@@ -75,28 +75,17 @@ void
 NeuralNetworkTopology::init(
   uint32_t input, const HiddenLayers& hiddens, uint32_t output,
   bool useBias /*= true*/) {
-  if (input == 0)
-    D_THROW(
-      std::invalid_argument,
-      "received invalid number of inputs, input=" << input);
-
-  for (uint32_t value : hiddens)
-    if (value == 0)
-      D_THROW(
-        std::invalid_argument,
-        "received invalid number of hidden neurons, value=" << value);
-
-  if (output == 0)
-    D_THROW(
-      std::invalid_argument,
-      "received invalid number of outputs, output=" << output);
 
   //
 
-  _input = input;
-  _output = output;
-  _hiddens = hiddens;
-  _useBias = useBias;
+  _inputLayerSize = input;
+  _outputLayerSize = output;
+  _hiddenLayers = hiddens;
+  _isUsingBias = useBias;
+
+  //
+
+  validate();
 
   //
 
@@ -122,17 +111,17 @@ NeuralNetworkTopology::init(
 
   auto it = list.begin();
   if (list.size() > 2)
-    _hiddens.reserve(list.size() - 2);
+    _hiddenLayers.reserve(list.size() - 2);
   for (std::size_t ii = 0; ii < list.size(); ++ii, ++it) {
     if (ii == 0)
-      _input = *it;
+      _inputLayerSize = *it;
     else if (ii + 1 == list.size())
-      _output = *it;
+      _outputLayerSize = *it;
     else
-      _hiddens.push_back(*it);
+      _hiddenLayers.push_back(*it);
   }
 
-  _useBias = useBias;
+  _isUsingBias = useBias;
 
   //
 
@@ -142,28 +131,47 @@ NeuralNetworkTopology::init(
 
 void
 NeuralNetworkTopology::_computeTotalWeights() {
-  uint32_t prev_layer_num_neuron = _input;
-  for (uint32_t num_neuron : _hiddens) {
+  uint32_t prev_layer_num_neuron = _inputLayerSize;
+  for (uint32_t num_neuron : _hiddenLayers) {
     _totalWeights += prev_layer_num_neuron * num_neuron;
     prev_layer_num_neuron = num_neuron;
   }
-  _totalWeights += prev_layer_num_neuron * _output;
+  _totalWeights += prev_layer_num_neuron * _outputLayerSize;
 }
 
 void
 NeuralNetworkTopology::_computeTotalNeurons() {
-  _totalNeurons = _input;
-  for (uint32_t size : _hiddens)
+  _totalNeurons = _inputLayerSize;
+  for (uint32_t size : _hiddenLayers)
     _totalNeurons += size;
-  _totalNeurons += _output;
+  _totalNeurons += _outputLayerSize;
+}
+
+void NeuralNetworkTopology::validate() const
+{
+  if (_inputLayerSize == 0)
+    D_THROW(
+      std::invalid_argument,
+      "received invalid number of inputs, input=" << _inputLayerSize);
+
+  for (uint32_t value : _hiddenLayers)
+    if (value == 0)
+      D_THROW(
+        std::invalid_argument,
+        "received invalid number of hidden neurons, value=" << value);
+
+  if (_outputLayerSize == 0)
+    D_THROW(
+      std::invalid_argument,
+      "received invalid number of outputs, output=" << _outputLayerSize);
 }
 
 bool
 NeuralNetworkTopology::isValid() const {
-  if (_input == 0 && _output == 0)
+  if (_inputLayerSize == 0 && _outputLayerSize == 0)
     return false;
 
-  for (uint32_t hiddenValue : _hiddens)
+  for (uint32_t hiddenValue : _hiddenLayers)
     if (hiddenValue == 0)
       return false;
 
@@ -171,23 +179,28 @@ NeuralNetworkTopology::isValid() const {
 }
 
 uint32_t
-NeuralNetworkTopology::getInput() const {
-  return _input;
+NeuralNetworkTopology::getInputLayerSize() const {
+  return _inputLayerSize;
 }
 
 uint32_t
-NeuralNetworkTopology::getOutput() const {
-  return _output;
+NeuralNetworkTopology::getOutputLayerSize() const {
+  return _outputLayerSize;
 }
 
 const NeuralNetworkTopology::HiddenLayers&
-NeuralNetworkTopology::getHiddens() const {
-  return _hiddens;
+NeuralNetworkTopology::getHiddenLayers() const {
+  return _hiddenLayers;
 }
 
 bool
 NeuralNetworkTopology::isUsingBias() const {
-  return _useBias;
+  return _isUsingBias;
+}
+
+uint32_t
+NeuralNetworkTopology::getTotalLayers() const {
+  return 2U + uint32_t(_hiddenLayers.size());
 }
 
 uint32_t

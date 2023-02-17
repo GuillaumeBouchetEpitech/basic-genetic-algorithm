@@ -4,6 +4,7 @@
 #include "NeuralNetwork.hpp"
 
 #include "Genome.hpp"
+#include "GenomeHelpers.hpp"
 
 #include "geronimo/system/NonCopyable.hpp"
 
@@ -16,6 +17,9 @@ public:
     uint32_t totalGenomes = 0;
     NeuralNetworkTopology topology;
 	  uint32_t minimumMutations = 0;
+    float mutationMaxChance = 0.2f;
+    float mutationMaxEffect = 0.2f;
+    GenomeHelpers::GetRandomCallback getRandomCallback;
   };
 
 private:
@@ -29,8 +33,6 @@ private: // attributes
 
   uint32_t _currentGeneration = 1; // generation number
 
-  NeuralNetworks _neuralNetworks;
-
 public: // ctor/dtor
   GeneticAlgorithm() = default;
 
@@ -40,11 +42,15 @@ public: // methods
 public: // method(s)
   bool breedPopulation();
 
+public: // method(s)
+  void setNeuralNetwork(
+    const AbstractGenome& inGenome,
+    NeuralNetwork& inNeuralNetwork);
+
 private: // method(s)
   void _getBestGenomes(Genomes& outGenomes) const;
 
 public: // getter(s)
-  const NeuralNetworks& getNeuralNetworks() const;
   std::size_t getTotalGenomes() const;
   AbstractGenome& getGenome(std::size_t inIndex);
   const AbstractGenome& getGenome(std::size_t inIndex) const;

@@ -36,12 +36,13 @@ public: // methods
 
 public: // setter
   void setConnectionsWeights(const std::vector<float>& inWeights);
+  void setConnectionsWeights(const float* inWeightsPtr, uint32_t inWeightsSize);
 
 public: // getter
   void getConnectionsWeights(std::vector<float>& outWeights) const;
   const NeuralNetworkTopology& getTopology() const;
 
-  void getNeuronsValues(std::vector<float>& outNeuronsOutputValues);
+  void getNeuronsValues(std::vector<float>& outNeuronsOutputValues) const;
   void setNeuronsValues(const std::vector<float>& inNeuronsValues);
 };
 

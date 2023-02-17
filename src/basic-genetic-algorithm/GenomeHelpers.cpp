@@ -3,7 +3,6 @@
 
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
-#include "geronimo/system/rng/RandomNumberGenerator.hpp"
 
 namespace GenomeHelpers {
 
@@ -12,16 +11,17 @@ namespace GenomeHelpers {
     const Genome& inParentA,
     const Genome& inParentB,
     uint32_t inTotalWeights,
-    Genome& outOffspring
+    Genome& outOffspring,
+    const GetRandomCallback& randomCallback
   ) {
     // default of 50/50 chances for both parents
-    int32_t chancesForParentA = 50; // 50%
+    float chancesForParentA = 0.5f; // 50%
 
     // 60/40 chances for the fittest parent
     if (inParentA.fitness > inParentB.fitness)
-      chancesForParentA = 60; // 60%
+      chancesForParentA = 0.6f; // 60%
     else if (inParentA.fitness < inParentB.fitness)
-      chancesForParentA = 40; // 40%
+      chancesForParentA = 0.4f; // 40%
 
     // crossover
 
@@ -29,7 +29,7 @@ namespace GenomeHelpers {
     outOffspring.connectionsWeights.reserve(inTotalWeights); // pre-allocate
 
     for (uint32_t ii = 0; ii < inTotalWeights; ++ii) {
-      if (gero::rng::RNG::getRangedValue(0, 100) < chancesForParentA)
+      if (randomCallback() < chancesForParentA)
         outOffspring.connectionsWeights.push_back(inParentA.connectionsWeights.at(ii));
       else
         outOffspring.connectionsWeights.push_back(inParentB.connectionsWeights.at(ii));
@@ -37,20 +37,22 @@ namespace GenomeHelpers {
   }
 
   void
-  mutate(Genome& inGenome, uint32_t inMinimumMutation /* = 0 */) {
-    constexpr int32_t mutationMaxChance = 20; // 20%
-    constexpr float mutationMaxEffect = 0.2f; // 20% x 2 = 40%
-
+  mutate(
+    Genome& inGenome,
+    uint32_t inMinimumMutation,
+    float inMutationMaxChance,
+    float inMutationMaxEffect,
+    const GetRandomCallback& randomCallback
+  ) {
     uint32_t totalMutation = 0;
 
     do {
 
       for (float& weight : inGenome.connectionsWeights)
       {
-        if (gero::rng::RNG::getRangedValue(0, 100) < mutationMaxChance)
+        if (randomCallback() < inMutationMaxChance)
         {
-          weight +=
-            gero::rng::RNG::getRangedValue(-mutationMaxEffect, +mutationMaxEffect);
+          weight += randomCallback() * inMutationMaxEffect * 2.0f - inMutationMaxEffect;
 
           totalMutation += 1;
         }
@@ -102,12 +104,15 @@ namespace GenomeHelpers {
     // return weightDiff;
   }
 
-  void randomiseConnectionWeights(Genome& inGenome, uint32_t inTotalWeights)
+  void randomizeConnectionWeights(
+    Genome& inGenome,
+    uint32_t inTotalWeights,
+    const GetRandomCallback& randomCallback)
   {
     inGenome.connectionsWeights.clear();
     inGenome.connectionsWeights.resize(inTotalWeights);
     for (float& weight : inGenome.connectionsWeights)
-      weight = gero::rng::RNG::getRangedValue(-1.0f, 1.0f);
+      weight = randomCallback() * 2.0f - 1.0f;
   }
 
 }
