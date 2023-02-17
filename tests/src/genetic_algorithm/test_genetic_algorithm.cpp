@@ -27,6 +27,15 @@ void runTest(
   genAlgoDef.topology = inNeuralNetworkTopology;
   genAlgoDef.totalGenomes = 300;
   genAlgoDef.minimumMutations = 2;
+  genAlgoDef.mutationMaxChance = 0.2f;
+  genAlgoDef.mutationMaxEffect = 0.2f;
+
+  gero::rng::RNG::ensureRandomSeed();
+
+  genAlgoDef.getRandomCallback = []()
+  {
+    return gero::rng::RNG::getNormalisedValue();
+  };
 
 	GeneticAlgorithm genAlgo;
   genAlgo.initialise(genAlgoDef);
@@ -83,8 +92,10 @@ void runTest(
   while (true);
 
 
-  D_MYERR("genAlgo.getGenerationNumber() " << genAlgo.getGenerationNumber());
-  D_MYERR("total genomes processed " << genAlgo.getGenerationNumber() * genAlgoDef.totalGenomes);
+  // D_MYERR("genAlgo.getGenerationNumber() " << genAlgo.getGenerationNumber());
+  // D_MYERR("total genomes processed " << genAlgo.getGenerationNumber() * genAlgoDef.totalGenomes);
+  D_MYERR("total generations " << genAlgo.getGenerationNumber()
+    << ", total completed genomes " << genAlgo.getGenerationNumber() * genAlgoDef.totalGenomes);
 
 
   {
@@ -128,7 +139,7 @@ void runTest(
 //
 //
 
-TEST(test_genetic_algorithm, test_logic_gate___yes) {
+TEST(basic_genetic_algorithm, test_logic_gate___yes) {
 
   std::array<TrainingData<1, 1>, 2> allTrainingDatas = {{
     { {{ 0.0f }}, {{ 0.0f }} },
@@ -141,7 +152,7 @@ TEST(test_genetic_algorithm, test_logic_gate___yes) {
   runTest(allTrainingDatas, neuralNetworkTopology, 5);
 }
 
-TEST(test_genetic_algorithm, test_logic_gate___no) {
+TEST(basic_genetic_algorithm, test_logic_gate___no) {
 
   std::array<TrainingData<1, 1>, 2> allTrainingDatas = {{
     { {{ 0.0f }}, {{ 1.0f }} },
@@ -154,7 +165,7 @@ TEST(test_genetic_algorithm, test_logic_gate___no) {
   runTest(allTrainingDatas, neuralNetworkTopology, 5);
 }
 
-TEST(test_genetic_algorithm, test_logic_gate___and) {
+TEST(basic_genetic_algorithm, test_logic_gate___and) {
 
   std::array<TrainingData<2, 1>, 4> allTrainingDatas = {{
     { {{ 0.0f, 0.0f }}, {{ 0.0f }} },
@@ -169,7 +180,7 @@ TEST(test_genetic_algorithm, test_logic_gate___and) {
   runTest(allTrainingDatas, neuralNetworkTopology, 20);
 }
 
-TEST(test_genetic_algorithm, test_logic_gate___nand) {
+TEST(basic_genetic_algorithm, test_logic_gate___nand) {
 
   std::array<TrainingData<2, 1>, 4> allTrainingDatas = {{
     { {{ 0.0f, 0.0f }}, {{ 1.0f }} },
@@ -184,7 +195,7 @@ TEST(test_genetic_algorithm, test_logic_gate___nand) {
   runTest(allTrainingDatas, neuralNetworkTopology, 20);
 }
 
-TEST(test_genetic_algorithm, test_logic_gate___or) {
+TEST(basic_genetic_algorithm, test_logic_gate___or) {
 
   std::array<TrainingData<2, 1>, 4> allTrainingDatas = {{
     { {{ 0.0f, 0.0f }}, {{ 0.0f }} },
@@ -199,7 +210,7 @@ TEST(test_genetic_algorithm, test_logic_gate___or) {
   runTest(allTrainingDatas, neuralNetworkTopology, 20);
 }
 
-TEST(test_genetic_algorithm, test_logic_gate___nor) {
+TEST(basic_genetic_algorithm, test_logic_gate___nor) {
 
   std::array<TrainingData<2, 1>, 4> allTrainingDatas = {{
     { {{ 0.0f, 0.0f }}, {{ 1.0f }} },
@@ -214,7 +225,7 @@ TEST(test_genetic_algorithm, test_logic_gate___nor) {
   runTest(allTrainingDatas, neuralNetworkTopology, 20);
 }
 
-TEST(test_genetic_algorithm, test_logic_gate___xor) {
+TEST(basic_genetic_algorithm, test_logic_gate___xor) {
 
   std::array<TrainingData<2, 1>, 4> allTrainingDatas = {{
     { {{ 0.0f, 0.0f }}, {{ 0.0f }} },
@@ -229,7 +240,7 @@ TEST(test_genetic_algorithm, test_logic_gate___xor) {
   runTest(allTrainingDatas, neuralNetworkTopology, 20);
 }
 
-TEST(test_genetic_algorithm, test_logic_gate___xnor) {
+TEST(basic_genetic_algorithm, test_logic_gate___xnor) {
 
   std::array<TrainingData<2, 1>, 4> allTrainingDatas = {{
     { {{ 0.0f, 0.0f }}, {{ 1.0f }} },
@@ -241,6 +252,6 @@ TEST(test_genetic_algorithm, test_logic_gate___xnor) {
   NeuralNetworkTopology neuralNetworkTopology;
   neuralNetworkTopology.init({ 2, 3, 1 });
 
-  runTest(allTrainingDatas, neuralNetworkTopology, 100);
+  runTest(allTrainingDatas, neuralNetworkTopology, 1000);
 }
 

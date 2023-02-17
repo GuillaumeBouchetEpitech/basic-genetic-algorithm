@@ -1,10 +1,11 @@
 
+DIR_LIB_GERONIMO?= ../thirdparties/dependencies/geronimo
+
 
 DIR_APPLICATION=								./bin
 DIR_SRC=												./src
 DIR_OBJ=												./obj
 DIR_LIB_BASIC_GENTIC_ALGORITHM=	..
-DIR_THIRDPARTY=									$(DIR_LIB_GERONIMO)/thirdparties
 
 #
 #
@@ -12,7 +13,7 @@ DIR_THIRDPARTY=									$(DIR_LIB_GERONIMO)/thirdparties
 
 NAME_APPLICATION=	$(DIR_APPLICATION)/exec
 
-NAME_GERONIMO+=		$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-system.a
+NAME_GERONIMO=		$(DIR_LIB_GERONIMO)/lib/native/lib-geronimo-system.a
 
 NAME_LIB_BASIC_GENTIC_ALGORITHM=	$(DIR_LIB_BASIC_GENTIC_ALGORITHM)/lib/native/lib-basic-genetic-algorithm.a
 
@@ -25,16 +26,17 @@ SRC+= \
 		$(DIR_SRC)/genetic_algorithm/*.cpp \
 	)
 
-# SRC+= \
-# 	$(wildcard \
-# 		$(DIR_SRC)/continuous_genetic_algorithm/*.cpp \
-# 	)
+SRC+= \
+	$(wildcard \
+		$(DIR_SRC)/continuous_genetic_algorithm/*.cpp \
+	)
 
 OBJ=		$(patsubst %.cpp, $(DIR_OBJ)/%.o, $(SRC))
 
 
 
-BUILD_FLAG= -g3
+BUILD_FLAG= -O3
+# BUILD_FLAG= -g3
 
 CXXFLAGS += $(BUILD_FLAG)
 CXXFLAGS += -std=c++17
@@ -42,7 +44,7 @@ CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 CXXFLAGS += -I$(DIR_SRC)
 CXXFLAGS += -I$(DIR_LIB_BASIC_GENTIC_ALGORITHM)/src
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/src
-CXXFLAGS += -I$(DIR_THIRDPARTY)
+CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties
 CXXFLAGS += -no-pie
 
 LDFLAGS += $(BUILD_FLAG)

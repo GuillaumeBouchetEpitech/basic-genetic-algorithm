@@ -2,6 +2,18 @@
 
 
 
+# ./bin/exec --gtest_filter=continuous_genetic_algorithm*
+# ./bin/exec --gtest_filter=basic_genetic_algorithm*
+# ./bin/exec --gtest_filter=neural_network_topology*
+
+# valgrind --leak-check=full ./bin/exec --gtest_filter=continuous_genetic_algorithm*
+valgrind --leak-check=full ./bin/exec --gtest_filter=basic_genetic_algorithm*
+valgrind --leak-check=full ./bin/exec --gtest_filter=neural_network_topology*
+
+exit
+
+
+
 TO_CHECK_DIR_LIB_GERONIMO=../thirdparties/dependencies/geronimo
 
 if [ -d "$TO_CHECK_DIR_LIB_GERONIMO" ]
