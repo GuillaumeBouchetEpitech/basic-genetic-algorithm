@@ -25,6 +25,13 @@ else
 $(error unsupported value for "build_mode", value=$(build_mode))
 endif
 
+
+
+
+DIR_LIB_GERONIMO?= ./thirdparties/dependencies/geronimo
+
+
+
 LOG_INFO= '[$(build_mode)] [$(build_platform)]'
 
 #
@@ -46,8 +53,7 @@ endif
 #### DIRS
 
 DIR_SRC=											./src
-DIR_LIB_GERONIMO_SRC=					$(DIR_LIB_GERONIMO)/src
-DIR_LIB_GERONIMO_3RD_PARTY=		$(DIR_LIB_GERONIMO)/thirdparties
+$(DIR_LIB_GERONIMO)/thirdparties=
 
 #### /DIRS
 
@@ -68,12 +74,8 @@ endif
 SRC_FILES+=	\
 	$(wildcard \
 		$(DIR_SRC)/basic-genetic-algorithm/*.cpp \
+		$(DIR_SRC)/basic-genetic-algorithm/experimental/*.cpp \
 		)
-
-# SRC_FILES+=	\
-# 	$(wildcard \
-# 		$(DIR_SRC)/basic-genetic-algorithm/experimental/*.cpp \
-# 		)
 
 #
 
@@ -96,8 +98,8 @@ CXXFLAGS += $(BUILD_FLAG)
 CXXFLAGS += -std=c++17
 CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 CXXFLAGS += -I$(DIR_SRC)
-CXXFLAGS += -I$(DIR_LIB_GERONIMO_SRC)
-CXXFLAGS += -I$(DIR_LIB_GERONIMO_3RD_PARTY)
+CXXFLAGS += -I$(DIR_LIB_GERONIMO)/src
+CXXFLAGS += -I$(DIR_LIB_GERONIMO)/thirdparties
 
 ifeq ($(build_platform),native)
 
