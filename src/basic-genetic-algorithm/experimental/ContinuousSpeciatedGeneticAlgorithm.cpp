@@ -41,7 +41,7 @@ void ContinuousSpeciatedGeneticAlgorithm::Definition::validate() const
 //
 //
 
-void ContinuousSpeciatedGeneticAlgorithm::initialise(const Definition& def)
+void ContinuousSpeciatedGeneticAlgorithm::initialize(const Definition& def)
 {
   _def = def;
 

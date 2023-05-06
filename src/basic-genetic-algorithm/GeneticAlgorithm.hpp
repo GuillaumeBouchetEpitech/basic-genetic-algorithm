@@ -37,7 +37,7 @@ public: // ctor/dtor
   GeneticAlgorithm() = default;
 
 public: // methods
-  void initialise(const Definition& def);
+  void initialize(const Definition& def);
 
 public: // method(s)
   bool breedPopulation();

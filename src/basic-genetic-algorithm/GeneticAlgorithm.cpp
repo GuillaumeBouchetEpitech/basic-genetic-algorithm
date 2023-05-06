@@ -9,7 +9,7 @@
 #include <iomanip>   // <= std::fixed / setprecision
 
 void
-GeneticAlgorithm::initialise(const Definition& inDef) {
+GeneticAlgorithm::initialize(const Definition& inDef) {
   _def = inDef;
 
   if (_def.totalGenomes < 10)
@@ -49,7 +49,7 @@ GeneticAlgorithm::initialise(const Definition& inDef) {
 bool
 GeneticAlgorithm::breedPopulation() {
   if (_genomes.empty())
-    D_THROW(std::runtime_error, "not initialised");
+    D_THROW(std::runtime_error, "not initialized");
 
   Genomes latestBestGenomes;
   _getBestGenomes(latestBestGenomes);
@@ -269,7 +269,7 @@ GeneticAlgorithm::getGenerationNumber() const {
 void
 GeneticAlgorithm::rateGenome(std::size_t inIndex, float inFitness) {
   if (_genomes.empty())
-    D_THROW(std::runtime_error, "not initialised");
+    D_THROW(std::runtime_error, "not initialized");
 
   _genomes.at(inIndex).rate(inFitness);
 }
