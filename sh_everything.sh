@@ -25,37 +25,81 @@ esac
 #
 #
 
-echo ""
-echo "#################################################"
-echo "#                                               #"
-echo "# IF THIS SCRIPT FAIL -> TRY THOSE TWO COMMANDS #"
-echo "# -> 'chmod u+x ./sh_everything.sh'              #"
-echo "# -> './sh_everything.sh'                       #"
-echo "#                                               #"
-echo "#################################################"
-echo ""
+#
+#
+#
+#
+#
+
+DIR_THIRDPARTIES=$PWD/thirdparties
+DIR_DEPENDENCIES=$DIR_THIRDPARTIES/dependencies
+
+mkdir -p $DIR_DEPENDENCIES
 
 #
 #
 #
 #
 #
+
+EMSDK_VERSION=3.1.26
 
 if [ -z "${EMSDK}" ]; then
+
+  echo " -> not installed"
+  echo "   -> installing"
+
   echo "the env var 'EMSDK' is missing, the web-wasm builds will be skipped"
   echo " => check the readme if you want to install emscripten"
   echo " => it emscripten is laready installed, you may just need to run '. ./emsdk_env.sh' in this terminal"
-  WEB_WASM_AVAILABLE=no
+
+
+  sh sh_install_one_git_thirdparty.sh \
+    $DIR_DEPENDENCIES \
+    "EMSDK" \
+    "emsdk" \
+    "emscripten-core/emsdk" \
+    $EMSDK_VERSION \
+    "not-interactive"
+
+  cd $DIR_DEPENDENCIES/emsdk
+
 else
-  echo "the env var 'EMSDK' was found, the web-wasm builds will be included"
-  WEB_WASM_AVAILABLE=yes
+
+  echo " -> already installed"
+
+  cd $EMSDK
 fi
+
+echo " -> ensuring the correct version is installed"
+
+./emsdk install $EMSDK_VERSION
+
+echo " -> activating the correct version"
+
+./emsdk activate --embedded $EMSDK_VERSION
+
+. ./emsdk_env.sh
+
+# em++ --clear-cache
+
+cd $DIR_ROOT
+
+echo " -> success"
 
 #
 #
 #
 #
 #
+
+echo ""
+echo "###"
+echo "###"
+echo "### ensuring the thirdparties are installed"
+echo "###"
+echo "###"
+echo ""
 
 case $AS_THIRD_PARTY_LIBRARY in
 yes)
@@ -68,13 +112,23 @@ yes)
   ;;
 *)
 
-  echo "ensuring the thirdparties are installed"
+  echo ""
+  echo "###"
+  echo "###"
+  echo "### building thirdparties libraries"
+  echo "###"
+  echo "###"
+  echo ""
 
-  chmod u+x ./sh_install_thirdparties.sh
-  ./sh_install_thirdparties.sh not-interactive
+  sh sh_install_one_git_thirdparty.sh \
+    $DIR_DEPENDENCIES \
+    "GERONIMO" \
+    "geronimo" \
+    "GuillaumeBouchetEpitech/geronimo" \
+    "v0.0.9" \
+    "not-interactive"
 
   echo "building thirdparties libraries"
-  echo "  native version"
 
   cd ./thirdparties/dependencies/geronimo
 
@@ -93,42 +147,22 @@ esac
 #
 #
 
-func_ensure_dependencies() {
+func_ensure_dependency_exist() {
 
-  ALL_DEPENDENCY_NAMES=${*}
+  dependency_name=$1
 
-  for dependency_name in $ALL_DEPENDENCY_NAMES;
-  do
+  echo "check if local dependency is present: $dependency_name"
 
-    echo "check if local dependency is present: $dependency_name"
-
-    if test -f "${dependency_name}"; then
-      echo "${dependency_name} was found"
-    else
-      echo "${dependency_name} was not found, possibly not built"
-      exit 1
-    fi
-
-  done
+  if test -f "${dependency_name}"; then
+    echo "${dependency_name} was found"
+  else
+    echo "${dependency_name} was not found, possibly not built"
+    exit 1
+  fi
 }
 
-declare -a all_dependency_names=(
-  "${DIR_LIB_GERONIMO}/lib/native/lib-geronimo-system.a"
-)
-
-func_ensure_dependencies ${all_dependency_names[*]}
-
-case $WEB_WASM_AVAILABLE in
-yes)
-
-  declare -a all_dependency_names=(
-    "${DIR_LIB_GERONIMO}/lib/web-wasm/lib-geronimo-system.bc"
-  )
-
-  func_ensure_dependencies ${all_dependency_names[*]}
-
-  ;;
-esac
+func_ensure_dependency_exist "${DIR_LIB_GERONIMO}/lib/native/lib-geronimo-system.a"
+func_ensure_dependency_exist "${DIR_LIB_GERONIMO}/lib/web-wasm/lib-geronimo-system.bc"
 
 #
 #
@@ -136,13 +170,22 @@ esac
 #
 #
 
-echo "building projects applicaton"
-echo "  native version"
-make build_mode="release" build_platform="native" all -j6
+echo ""
+echo "###"
+echo "###"
+echo "### building main libraries"
+echo "###"
+echo "###"
+echo ""
 
-case $WEB_WASM_AVAILABLE in
-yes)
-  echo "  web-wasm version"
-  make build_mode="release" build_platform="web-wasm" all -j6
-  ;;
-esac
+echo "#"
+echo "# native version"
+echo "#"
+
+make build_mode="release" build_platform="native" all -j4
+
+echo "#"
+echo "# web-wasm version"
+echo "#"
+
+make build_mode="release" build_platform="web-wasm" all -j4
