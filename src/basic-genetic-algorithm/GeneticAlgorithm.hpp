@@ -16,7 +16,7 @@ public:
   struct Definition {
     uint32_t totalGenomes = 0;
     NeuralNetworkTopology topology;
-	  uint32_t minimumMutations = 0;
+    uint32_t minimumMutations = 0;
     float mutationMaxChance = 0.2f;
     float mutationMaxEffect = 0.2f;
     GenomeHelpers::GetRandomCallback getRandomCallback;
@@ -44,8 +44,7 @@ public: // method(s)
 
 public: // method(s)
   void setNeuralNetwork(
-    const AbstractGenome& inGenome,
-    NeuralNetwork& inNeuralNetwork);
+    const AbstractGenome& inGenome, NeuralNetwork& inNeuralNetwork);
 
 private: // method(s)
   void _getBestGenomes(Genomes& outGenomes) const;

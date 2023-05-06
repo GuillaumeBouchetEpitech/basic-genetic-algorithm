@@ -4,11 +4,7 @@
 uint64_t Genome::_currentId = 1UL;
 
 // default ctor
-Genome::Genome()
-  : id(Genome::_currentId++)
-{
-  id = Genome::_currentId++;
-}
+Genome::Genome() : id(Genome::_currentId++) { id = Genome::_currentId++; }
 
 // copy ctor
 Genome::Genome(const Genome& other) {

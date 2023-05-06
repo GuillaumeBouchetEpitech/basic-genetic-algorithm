@@ -27,8 +27,8 @@ public:
   virtual ~NeuralNetworkTopology() = default;
 
   void init(
-    uint32_t inputLayerSize, const HiddenLayers& hiddenLayers, uint32_t outputLayerSize,
-    bool useBias = true);
+    uint32_t inputLayerSize, const HiddenLayers& hiddenLayers,
+    uint32_t outputLayerSize, bool useBias = true);
 
   void init(const std::initializer_list<uint32_t>& list, bool useBias = true);
 

@@ -1,26 +1,24 @@
 
 #pragma once
 
-#include "basic-genetic-algorithm/NeuralNetwork.hpp"
 #include "basic-genetic-algorithm/Genome.hpp"
 #include "basic-genetic-algorithm/GenomeHelpers.hpp"
+#include "basic-genetic-algorithm/NeuralNetwork.hpp"
 
 #include "GenomesAncestor.hpp"
 
 #include "geronimo/system/NonCopyable.hpp"
-#include "geronimo/system/containers/weak_ref_data_pool.hpp"
 #include "geronimo/system/containers/dynamic_heap_array.hpp"
+#include "geronimo/system/containers/weak_ref_data_pool.hpp"
 
 #include <array>
 #include <cstdint>
-#include <set>
 #include <functional>
-
+#include <set>
 
 class ContinuousSpeciatedGeneticAlgorithm : public gero::NonCopyable {
 
 public:
-
   struct Definition {
 
     uint32_t genomePoolSize = 128;
@@ -43,14 +41,13 @@ public:
     void validate() const;
   };
 
-
 public:
   using GenomesPool = gero::weak_ref_data_pool<Genome, Genome, 256, false>;
   using GenomeWeakRef = GenomesPool::weak_ref;
 
 public:
-
-  using GenomesAncestors = gero::dynamic_heap_array<GenomesAncestor, GenomesAncestor, 128>;
+  using GenomesAncestors =
+    gero::dynamic_heap_array<GenomesAncestor, GenomesAncestor, 128>;
 
 private: // attributes
   Definition _def;
@@ -67,7 +64,6 @@ public: // methods
   void initialize(const Definition& def);
 
 public: // method(s)
-
   GenomeWeakRef acquireNewGenome();
   void discardGenome(GenomeWeakRef inGenomeRef, float inFitness);
 
@@ -75,5 +71,4 @@ public: // getter(s)
   const AbstractGenome& getBestGenome() const;
   uint32_t getTotalCompletedGenomes() const;
   uint32_t getTotalAncestors() const;
-
 };

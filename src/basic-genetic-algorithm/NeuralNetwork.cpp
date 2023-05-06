@@ -71,8 +71,7 @@ customRectifiedLinearUnit(float x) {
 }; // namespace activations
 
 NeuralNetwork::NeuralNetwork(const NeuralNetworkTopology& inTopology)
-  : _topology(inTopology)
-{
+  : _topology(inTopology) {
   // defensive check
   if (!_topology.isValid())
     D_THROW(std::invalid_argument, "invalid neural network topology");
@@ -91,7 +90,7 @@ NeuralNetwork::NeuralNetwork(const NeuralNetworkTopology& inTopology)
   //
 
   for (uint32_t index = 0; index < _topology.getInputLayerSize(); ++index)
-    _neurons.push_back({ 0.0f, 0, 0, _topology.getInputLayerSize() });
+    _neurons.push_back({0.0f, 0, 0, _topology.getInputLayerSize()});
 
   //
   //
@@ -103,18 +102,19 @@ NeuralNetwork::NeuralNetwork(const NeuralNetworkTopology& inTopology)
     uint32_t size;
   };
 
-  LayerData prevLayer = { 0, _topology.getInputLayerSize() };
+  LayerData prevLayer = {0, _topology.getInputLayerSize()};
 
   const auto& hiddenLayers = _topology.getHiddenLayers();
-  for (std::size_t layerIndex = 0; layerIndex < hiddenLayers.size(); ++layerIndex) {
+  for (std::size_t layerIndex = 0; layerIndex < hiddenLayers.size();
+       ++layerIndex) {
 
-    LayerData currLayer = { prevLayer.size, hiddenLayers.at(layerIndex) };
+    LayerData currLayer = {prevLayer.size, hiddenLayers.at(layerIndex)};
 
     //
 
-    for (uint32_t neuronIndex = 0; neuronIndex < currLayer.size; ++neuronIndex)
-    {
-      _neurons.push_back({ 0.0f, prevLayer.start, weightIndex, prevLayer.size });
+    for (uint32_t neuronIndex = 0; neuronIndex < currLayer.size;
+         ++neuronIndex) {
+      _neurons.push_back({0.0f, prevLayer.start, weightIndex, prevLayer.size});
       weightIndex += prevLayer.size;
     }
 
@@ -127,16 +127,14 @@ NeuralNetwork::NeuralNetwork(const NeuralNetworkTopology& inTopology)
   //
   //
 
-  for (uint32_t neuronIndex = 0; neuronIndex < _topology.getOutputLayerSize(); ++neuronIndex)
-  {
-    _neurons.push_back({ 0.0f, prevLayer.start, weightIndex, prevLayer.size });
+  for (uint32_t neuronIndex = 0; neuronIndex < _topology.getOutputLayerSize();
+       ++neuronIndex) {
+    _neurons.push_back({0.0f, prevLayer.start, weightIndex, prevLayer.size});
     weightIndex += prevLayer.size;
   }
-
 }
 
-NeuralNetwork::NeuralNetwork(const NeuralNetwork& other)
-{
+NeuralNetwork::NeuralNetwork(const NeuralNetwork& other) {
   if (&other == this)
     return;
 
@@ -145,8 +143,7 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& other)
   _connectionsWeights = other._connectionsWeights;
 }
 
-NeuralNetwork::NeuralNetwork(NeuralNetwork&& other)
-{
+NeuralNetwork::NeuralNetwork(NeuralNetwork&& other) {
   if (&other == this)
     return;
 
@@ -155,8 +152,8 @@ NeuralNetwork::NeuralNetwork(NeuralNetwork&& other)
   _connectionsWeights = std::move(other._connectionsWeights);
 }
 
-NeuralNetwork& NeuralNetwork::operator=(const NeuralNetwork& other)
-{
+NeuralNetwork&
+NeuralNetwork::operator=(const NeuralNetwork& other) {
   if (&other == this)
     return *this;
 
@@ -167,8 +164,8 @@ NeuralNetwork& NeuralNetwork::operator=(const NeuralNetwork& other)
   return *this;
 }
 
-NeuralNetwork& NeuralNetwork::operator=(NeuralNetwork&& other)
-{
+NeuralNetwork&
+NeuralNetwork::operator=(NeuralNetwork&& other) {
   if (&other == this)
     return *this;
 
@@ -186,9 +183,10 @@ NeuralNetwork::compute(
 
   if (inInputValues.size() != _topology.getInputLayerSize())
     D_THROW(
-      std::invalid_argument, "invalid number of input"
-                               << ", input=" << inInputValues.size()
-                               << ", expected=" << _topology.getInputLayerSize());
+      std::invalid_argument,
+      "invalid number of input"
+        << ", input=" << inInputValues.size()
+        << ", expected=" << _topology.getInputLayerSize());
 
   //
   //
@@ -204,8 +202,8 @@ NeuralNetwork::compute(
   const std::size_t totalNeurons = _neurons.size();
   static_cast<void>(totalNeurons); // unused
 
-  for (std::size_t currNeuronIndex = _topology.getInputLayerSize(); currNeuronIndex < _neurons.size(); ++currNeuronIndex)
-  {
+  for (std::size_t currNeuronIndex = _topology.getInputLayerSize();
+       currNeuronIndex < _neurons.size(); ++currNeuronIndex) {
     auto& currNeuron = _neurons.at(currNeuronIndex);
 
     // Sum the weights to the activation value.
@@ -214,10 +212,12 @@ NeuralNetwork::compute(
     const std::size_t totalWeight = _connectionsWeights.size();
     static_cast<void>(totalWeight); // unused
 
-    for (std::size_t prevNeuronIndex = 0; prevNeuronIndex < currNeuron.layerSize; ++prevNeuronIndex)
-    {
-      const float currValue = _neurons.at(currNeuron.startNeuron + prevNeuronIndex).value;
-      const float currWeight = _connectionsWeights.at(currNeuron.startWeight + prevNeuronIndex);
+    for (std::size_t prevNeuronIndex = 0;
+         prevNeuronIndex < currNeuron.layerSize; ++prevNeuronIndex) {
+      const float currValue =
+        _neurons.at(currNeuron.startNeuron + prevNeuronIndex).value;
+      const float currWeight =
+        _connectionsWeights.at(currNeuron.startWeight + prevNeuronIndex);
 
       summedValues += currValue * currWeight;
     }
@@ -243,23 +243,21 @@ NeuralNetwork::compute(
 }
 
 void
-NeuralNetwork::setConnectionsWeights(const std::vector<float>& inWeights)
-{
+NeuralNetwork::setConnectionsWeights(const std::vector<float>& inWeights) {
   setConnectionsWeights(inWeights.data(), uint32_t(inWeights.size()));
 }
 
 void
-NeuralNetwork::setConnectionsWeights(const float* inWeightsPtr, uint32_t inWeightsSize)
-{
+NeuralNetwork::setConnectionsWeights(
+  const float* inWeightsPtr, uint32_t inWeightsSize) {
   const uint32_t totalWeights = _topology.getTotalWeights();
 
   // defensive check
-  if (inWeightsSize != totalWeights)
-  {
-    D_THROW(std::invalid_argument,
-      "received invalid number of weights"
-      << ", expected=" << totalWeights
-      << ", input=" << inWeightsSize);
+  if (inWeightsSize != totalWeights) {
+    D_THROW(
+      std::invalid_argument, "received invalid number of weights"
+                               << ", expected=" << totalWeights
+                               << ", input=" << inWeightsSize);
   }
 
   for (std::size_t ii = 0; ii < _connectionsWeights.size(); ++ii)
@@ -281,7 +279,8 @@ NeuralNetwork::getTopology() const {
 }
 
 void
-NeuralNetwork::getNeuronsValues(std::vector<float>& outNeuronsOutputValues) const {
+NeuralNetwork::getNeuronsValues(
+  std::vector<float>& outNeuronsOutputValues) const {
   outNeuronsOutputValues.clear();
   outNeuronsOutputValues.reserve(_topology.getTotalNeurons());
 

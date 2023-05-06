@@ -39,10 +39,7 @@ GeneticAlgorithm::initialize(const Definition& inDef) {
   for (auto& currGenome : _genomes) {
 
     GenomeHelpers::randomizeConnectionWeights(
-      currGenome,
-      _def.topology.getTotalWeights(),
-      _def.getRandomCallback);
-
+      currGenome, _def.topology.getTotalWeights(), _def.getRandomCallback);
   }
 }
 
@@ -57,7 +54,8 @@ GeneticAlgorithm::breedPopulation() {
   const auto& latestBestGenome = latestBestGenomes.front();
 
   const auto& oldBestGenome = _eliteGenomes.front();
-  const bool isSmarterGeneration = (latestBestGenome.fitness > oldBestGenome.fitness);
+  const bool isSmarterGeneration =
+    (latestBestGenome.fitness > oldBestGenome.fitness);
 
 #if 0
 
@@ -164,18 +162,12 @@ GeneticAlgorithm::breedPopulation() {
       Genome newOffspring;
 
       GenomeHelpers::reproduce(
-        parentGenomeA,
-        parentGenomeB,
-        _def.topology.getTotalWeights(),
-        newOffspring,
-        _def.getRandomCallback);
+        parentGenomeA, parentGenomeB, _def.topology.getTotalWeights(),
+        newOffspring, _def.getRandomCallback);
 
       GenomeHelpers::mutate(
-        newOffspring,
-        _def.minimumMutations,
-        _def.mutationMaxChance,
-        _def.mutationMaxEffect,
-        _def.getRandomCallback);
+        newOffspring, _def.minimumMutations, _def.mutationMaxChance,
+        _def.mutationMaxEffect, _def.getRandomCallback);
 
       // move, no realloc of the weights
       // offsprings.push_back(std::move(newOffspring));

@@ -7,8 +7,8 @@
 #include <exception>
 #include <stdexcept>
 
-NeuralNetworkTopology::NeuralNetworkTopology(const NeuralNetworkTopology& other)
-{
+NeuralNetworkTopology::NeuralNetworkTopology(
+  const NeuralNetworkTopology& other) {
   if (&other == this)
     return;
 
@@ -22,8 +22,7 @@ NeuralNetworkTopology::NeuralNetworkTopology(const NeuralNetworkTopology& other)
   _totalNeurons = other._totalNeurons;
 }
 
-NeuralNetworkTopology::NeuralNetworkTopology(NeuralNetworkTopology&& other)
-{
+NeuralNetworkTopology::NeuralNetworkTopology(NeuralNetworkTopology&& other) {
   if (&other == this)
     return;
 
@@ -37,8 +36,8 @@ NeuralNetworkTopology::NeuralNetworkTopology(NeuralNetworkTopology&& other)
   std::swap(_totalNeurons, other._totalNeurons);
 }
 
-NeuralNetworkTopology& NeuralNetworkTopology::operator=(const NeuralNetworkTopology& other)
-{
+NeuralNetworkTopology&
+NeuralNetworkTopology::operator=(const NeuralNetworkTopology& other) {
   if (&other == this)
     return *this;
 
@@ -54,8 +53,8 @@ NeuralNetworkTopology& NeuralNetworkTopology::operator=(const NeuralNetworkTopol
   return *this;
 }
 
-NeuralNetworkTopology& NeuralNetworkTopology::operator=(NeuralNetworkTopology&& other)
-{
+NeuralNetworkTopology&
+NeuralNetworkTopology::operator=(NeuralNetworkTopology&& other) {
   if (&other == this)
     return *this;
 
@@ -147,8 +146,8 @@ NeuralNetworkTopology::_computeTotalNeurons() {
   _totalNeurons += _outputLayerSize;
 }
 
-void NeuralNetworkTopology::validate() const
-{
+void
+NeuralNetworkTopology::validate() const {
   if (_inputLayerSize == 0)
     D_THROW(
       std::invalid_argument,

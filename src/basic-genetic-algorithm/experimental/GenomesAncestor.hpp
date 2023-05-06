@@ -4,8 +4,8 @@
 #include "basic-genetic-algorithm/Genome.hpp"
 #include "basic-genetic-algorithm/GenomeHelpers.hpp"
 
-#include <vector>
 #include <cstdint>
+#include <vector>
 
 // TODO: class + container... factory pattern?
 struct GenomesAncestor {
@@ -34,9 +34,9 @@ public:
   void computePriorityScore(float inReusedAncestorScorePenalty);
 
 public:
-  const Genome& getGenome(const GenomeHelpers::GetRandomCallback& callback) const;
+  const Genome&
+  getGenome(const GenomeHelpers::GetRandomCallback& callback) const;
   float getFitness() const;
   float getPriorityScore() const;
   bool operator<(const GenomesAncestor& other) const;
-
 };
