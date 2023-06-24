@@ -1,6 +1,14 @@
 
 # Changelog
 
+## [0.0.7] - 2023-06-24
+### Changed
+- chore: dependencies update
+
+## [0.0.6] - 2023-05-06
+### Changed
+- chore: better build format
+
 ## [0.0.5] - 2023-02-17
 ### Changed
 - test: updated tests

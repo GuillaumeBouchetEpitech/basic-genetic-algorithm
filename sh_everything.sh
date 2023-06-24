@@ -42,6 +42,14 @@ mkdir -p $DIR_DEPENDENCIES
 #
 #
 
+echo ""
+echo "###"
+echo "###"
+echo "### ensuring the cpp to wasm compiler (emsdk) is installed"
+echo "###"
+echo "###"
+echo ""
+
 EMSDK_VERSION=3.1.26
 
 if [ -z "${EMSDK}" ]; then
@@ -125,14 +133,14 @@ yes)
     "GERONIMO" \
     "geronimo" \
     "GuillaumeBouchetEpitech/geronimo" \
-    "v0.0.9" \
+    "v0.0.11" \
     "not-interactive"
 
   echo "building thirdparties libraries"
 
   cd ./thirdparties/dependencies/geronimo
 
-  ./sh_everything.sh
+  sh sh_everything.sh
 
   export DIR_LIB_GERONIMO=$DIR_ROOT/thirdparties/dependencies/geronimo
 

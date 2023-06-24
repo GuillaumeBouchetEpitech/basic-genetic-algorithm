@@ -69,7 +69,7 @@ void runTest_continuous(
   //
 
 	ContinuousSpeciatedGeneticAlgorithm genAlgo;
-  genAlgo.initialise(genAlgoDef);
+  genAlgo.initialize(genAlgoDef);
 
 	constexpr float k_maximumFitness = float(inAllTrainingData.size());
 	constexpr float k_minimumFitness = k_maximumFitness - 0.05f;
