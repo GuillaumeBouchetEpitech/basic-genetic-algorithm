@@ -7,10 +7,14 @@
 # ./bin/exec --gtest_filter=neural_network_topology*
 
 # valgrind --leak-check=full ./bin/exec --gtest_filter=continuous_genetic_algorithm*
-valgrind --leak-check=full ./bin/exec --gtest_filter=basic_genetic_algorithm*
-valgrind --leak-check=full ./bin/exec --gtest_filter=neural_network_topology*
+# valgrind --leak-check=full ./bin/exec --gtest_filter=basic_genetic_algorithm*
+# valgrind --leak-check=full ./bin/exec --gtest_filter=neural_network_topology*
 
-exit
+# make -j
+# ./bin/exec --gtest_filter=basic_genetic_algorithm*
+# # ./bin/exec
+
+# exit
 
 
 

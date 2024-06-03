@@ -179,7 +179,7 @@ NeuralNetwork::operator=(NeuralNetwork&& other) {
 void
 NeuralNetwork::compute(
   const std::vector<float>& inInputValues,
-  std::vector<float>& outOutputValues) {
+  std::vector<float>& outOutputValues) const {
 
   if (inInputValues.size() != _topology.getInputLayerSize())
     D_THROW(

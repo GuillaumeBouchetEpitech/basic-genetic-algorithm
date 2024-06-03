@@ -57,7 +57,7 @@ float
 compare(const Genome& genomeA, const Genome& genomeB, uint32_t inTotalWeights) {
 
   if (&genomeA == &genomeB) {
-    D_THROW(std::runtime_error, "comparing asme genomes");
+    D_THROW(std::runtime_error, "comparing same genomes");
   }
 
   const auto& weightsA = genomeA.connectionsWeights;

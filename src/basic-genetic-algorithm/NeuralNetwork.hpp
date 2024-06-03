@@ -19,7 +19,7 @@ private: // internal structures
 
 private: // attributes
   NeuralNetworkTopology _topology;
-  std::vector<Neuron> _neurons;
+  mutable std::vector<Neuron> _neurons;
   std::vector<float> _connectionsWeights;
 
 public: // ctor/dtor
@@ -32,7 +32,7 @@ public: // ctor/dtor
 
 public: // methods
   void compute(
-    const std::vector<float>& inputValues, std::vector<float>& outputValues);
+    const std::vector<float>& inputValues, std::vector<float>& outputValues) const;
 
 public: // setter
   void setConnectionsWeights(const std::vector<float>& inWeights);

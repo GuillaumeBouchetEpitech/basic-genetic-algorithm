@@ -55,6 +55,7 @@ public: // getter(s)
   const AbstractGenome& getGenome(std::size_t inIndex) const;
   const AbstractGenome& getBestGenome() const;
   uint32_t getGenerationNumber() const;
+  // const Definition& getDefinition() const;
 
 public: // setter(s)
   void rateGenome(std::size_t inIndex, float inFitness);

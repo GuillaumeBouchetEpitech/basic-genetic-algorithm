@@ -4,17 +4,19 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/src/**",
-                "./thirdparties/dependencies/geronimo/src/**",
-                "./thirdparties/dependencies/geronimo/thirdparties/**",
-                "${EMSDK}/upstream/emscripten/system/include/**"
+                "${workspaceFolder}/samples/car-demo/src/**",
+                "${workspaceFolder}/thirdparties/dependencies/geronimo/src/**",
+                "${workspaceFolder}/thirdparties/dependencies/geronimo/thirdparties/**",
+                "${EMSDK}/upstream/emscripten/system/include/**",
+                "/usr/include/SDL2/"
             ],
             "defines": [
                 "__GNUC__=3",
                 "Py_BUILD_CORE"
             ],
-            "compilerPath": "/usr/bin/clang++",
+            "compilerPath": "g++",
             "cStandard": "c17",
-            "cppStandard": "c++17",
+            "cppStandard": "c++20",
             // "intelliSenseMode": "gcc-x64"
         }
     ],

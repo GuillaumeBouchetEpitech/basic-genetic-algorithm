@@ -25,7 +25,7 @@ void runTest(
 {
   GeneticAlgorithm::Definition genAlgoDef;
   genAlgoDef.topology = inNeuralNetworkTopology;
-  genAlgoDef.totalGenomes = 300;
+  genAlgoDef.totalGenomes = 1000;
   genAlgoDef.minimumMutations = 2;
   genAlgoDef.mutationMaxChance = 0.2f;
   genAlgoDef.mutationMaxEffect = 0.2f;

@@ -256,6 +256,12 @@ GeneticAlgorithm::getGenerationNumber() const {
   return _currentGeneration;
 }
 
+// const GeneticAlgorithm::Definition&
+// GeneticAlgorithm::getDefinition() const {
+//   return _def;
+// }
+
+
 //
 
 void

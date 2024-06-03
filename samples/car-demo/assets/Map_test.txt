@@ -1,0 +1,43 @@
+
+
+# straight
+checkpoint-angle       0      0     100
+checkpoint-angle       0   -100     100
+checkpoint-angle       0   -100     100
+checkpoint-angle     100   -100     100
+checkpoint-angle       0   -100     100
+checkpoint-angle    -100   -100     100
+checkpoint-angle    -150      0     100
+checkpoint-angle    -100    100     100
+checkpoint-angle       0    150     100
+checkpoint-angle    +100    100     100
+checkpoint-angle       0    100     100
+checkpoint-angle    -100    100     100
+checkpoint-angle    -100      0     100
+checkpoint-angle    -100   -100     100
+checkpoint-angle       0   -100     100
+checkpoint-angle       0   -100     100
+checkpoint-angle    -100      0     100
+checkpoint-angle    -100      0     100
+checkpoint-angle       0   -100     100
+checkpoint-angle       0   -100     100
+checkpoint-angle    +100      0     100
+checkpoint-angle    +100      0     100
+checkpoint-angle       0   -100     100
+checkpoint-angle       0   -100     100
+checkpoint-angle    -100      0     100
+checkpoint-angle    -100      0     100
+checkpoint-angle       0   -100     100
+checkpoint-angle       0   -100     100
+checkpoint-angle    +100      0     100
+checkpoint-angle    +100      0     100
+checkpoint-angle    +100      0     100
+checkpoint-angle    +100      0     200
+checkpoint-angle    +100      0     200
+checkpoint-angle    +100      0     200
+checkpoint-angle    +100      0     40
+checkpoint-angle    +100      0     40
+checkpoint-angle    +100      0     100
+checkpoint-angle    +100      0     100
+checkpoint-angle    +100      0     100
+

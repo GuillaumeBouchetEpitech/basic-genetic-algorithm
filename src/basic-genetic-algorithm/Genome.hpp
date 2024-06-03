@@ -38,12 +38,12 @@ public:
   std::vector<float> connectionsWeights;
 
 public:
-  virtual uint64_t getId() const override;
-  virtual float getFitness() const override;
-  virtual const std::vector<float>& getConnectionsWeights() const override;
+  uint64_t getId() const override;
+  float getFitness() const override;
+  const std::vector<float>& getConnectionsWeights() const override;
 
 public:
-  virtual void rate(float inFitness) override;
+  void rate(float inFitness) override;
 };
 
 // using Genomes = std::vector<Genome>;

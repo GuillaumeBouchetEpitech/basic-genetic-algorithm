@@ -50,7 +50,7 @@ echo "###"
 echo "###"
 echo ""
 
-EMSDK_VERSION=3.1.26
+EMSDK_VERSION=3.1.44
 
 if [ -z "${EMSDK}" ]; then
 
@@ -133,7 +133,7 @@ yes)
     "GERONIMO" \
     "geronimo" \
     "GuillaumeBouchetEpitech/geronimo" \
-    "v0.0.11" \
+    "v0.0.16" \
     "not-interactive"
 
   echo "building thirdparties libraries"
