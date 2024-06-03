@@ -28,10 +28,10 @@ const onGlobalPageLoad = async () => {
   const errorText = findOrFailHtmlElement<HTMLParagraphElement>("#errorText")!;
   const renderArea = findOrFailHtmlElement<HTMLDivElement>("#renderArea")!;
   const mainCanvas = findOrFailHtmlElement<HTMLCanvasElement>("#canvas")!;
-  const buttons = {
-    switchTo3cpuCores: findOrFailHtmlElement<HTMLButtonElement>("#try_with_3_cpu_cores")!,
-    switchTo6cpuCores: findOrFailHtmlElement<HTMLButtonElement>("#try_with_6_cpu_cores")!,
-  };
+  // const buttons = {
+  //   switchTo3cpuCores: findOrFailHtmlElement<HTMLButtonElement>("#try_with_3_cpu_cores")!,
+  //   switchTo6cpuCores: findOrFailHtmlElement<HTMLButtonElement>("#try_with_6_cpu_cores")!,
+  // };
 
   const hide = (htmlElem: HTMLElement) => {
     if (htmlElem.style.display !== 'none')
@@ -86,37 +86,37 @@ const onGlobalPageLoad = async () => {
 
   resize(config.width, config.height);
 
-  //
-  //
-  // buttons' logic
+  // //
+  // //
+  // // buttons' logic
 
-  const setupActiveButton = (currButton: HTMLButtonElement, className: string, totalCores: number) => {
+  // const setupActiveButton = (currButton: HTMLButtonElement, className: string, totalCores: number) => {
 
-    currButton.disabled = false;
+  //   currButton.disabled = false;
 
-    // add active class
-    if (!currButton.classList.contains(className))
-      currButton.classList.add(className);
+  //   // add active class
+  //   if (!currButton.classList.contains(className))
+  //     currButton.classList.add(className);
 
-    // remove grey class
-    if (currButton.classList.contains('grayButton'))
-      currButton.classList.remove('grayButton');
+  //   // remove grey class
+  //   if (currButton.classList.contains('grayButton'))
+  //     currButton.classList.remove('grayButton');
 
-    // handle events
-    currButton.addEventListener("click", () => {
-      // simple reload
-      window.location.href = window.location.pathname + `?totalCores=${totalCores}`;
-    });
-  }
+  //   // handle events
+  //   currButton.addEventListener("click", () => {
+  //     // simple reload
+  //     window.location.href = window.location.pathname + `?totalCores=${totalCores}`;
+  //   });
+  // }
 
-  if (config.totalCores != 3) {
-    buttons.switchTo6cpuCores.disabled = true;
-    setupActiveButton(buttons.switchTo3cpuCores, 'blueButton', 3);
-  }
-  else {
-    buttons.switchTo3cpuCores.disabled = true;
-    setupActiveButton(buttons.switchTo6cpuCores, 'redButton', 6);
-  }
+  // if (config.totalCores != 3) {
+  //   buttons.switchTo6cpuCores.disabled = true;
+  //   setupActiveButton(buttons.switchTo3cpuCores, 'blueButton', 3);
+  // }
+  // else {
+  //   buttons.switchTo3cpuCores.disabled = true;
+  //   setupActiveButton(buttons.switchTo6cpuCores, 'redButton', 6);
+  // }
 
   //
   //
