@@ -7,8 +7,7 @@
 #include <exception>
 #include <stdexcept>
 
-NeuralNetworkTopology::NeuralNetworkTopology(
-  const NeuralNetworkTopology& other) {
+NeuralNetworkTopology::NeuralNetworkTopology(const NeuralNetworkTopology& other) {
   if (&other == this)
     return;
 
@@ -71,9 +70,7 @@ NeuralNetworkTopology::operator=(NeuralNetworkTopology&& other) {
 }
 
 void
-NeuralNetworkTopology::init(
-  uint32_t input, const HiddenLayers& hiddens, uint32_t output,
-  bool useBias /*= true*/) {
+NeuralNetworkTopology::init(uint32_t input, const HiddenLayers& hiddens, uint32_t output, bool useBias /*= true*/) {
 
   //
 
@@ -93,18 +90,13 @@ NeuralNetworkTopology::init(
 }
 
 void
-NeuralNetworkTopology::init(
-  const std::initializer_list<uint32_t>& list, bool useBias /*= true*/) {
+NeuralNetworkTopology::init(const std::initializer_list<uint32_t>& list, bool useBias /*= true*/) {
   if (list.size() < 2)
-    D_THROW(
-      std::invalid_argument,
-      "received invalid number of layers, list=" << list.size());
+    D_THROW(std::invalid_argument, "received invalid number of layers, list=" << list.size());
 
   for (uint32_t value : list)
     if (value == 0)
-      D_THROW(
-        std::invalid_argument,
-        "received invalid number of neurons, value=" << value);
+      D_THROW(std::invalid_argument, "received invalid number of neurons, value=" << value);
 
   //
 
@@ -149,20 +141,14 @@ NeuralNetworkTopology::_computeTotalNeurons() {
 void
 NeuralNetworkTopology::validate() const {
   if (_inputLayerSize == 0)
-    D_THROW(
-      std::invalid_argument,
-      "received invalid number of inputs, input=" << _inputLayerSize);
+    D_THROW(std::invalid_argument, "received invalid number of inputs, input=" << _inputLayerSize);
 
   for (uint32_t value : _hiddenLayers)
     if (value == 0)
-      D_THROW(
-        std::invalid_argument,
-        "received invalid number of hidden neurons, value=" << value);
+      D_THROW(std::invalid_argument, "received invalid number of hidden neurons, value=" << value);
 
   if (_outputLayerSize == 0)
-    D_THROW(
-      std::invalid_argument,
-      "received invalid number of outputs, output=" << _outputLayerSize);
+    D_THROW(std::invalid_argument, "received invalid number of outputs, output=" << _outputLayerSize);
 }
 
 bool

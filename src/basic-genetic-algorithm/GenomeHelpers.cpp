@@ -8,8 +8,8 @@ namespace GenomeHelpers {
 
 void
 reproduce(
-  const Genome& inParentA, const Genome& inParentB, uint32_t inTotalWeights,
-  Genome& outOffspring, const GetRandomCallback& randomCallback) {
+  const Genome& inParentA, const Genome& inParentB, uint32_t inTotalWeights, Genome& outOffspring,
+  const GetRandomCallback& randomCallback) {
   // default of 50/50 chances for both parents
   float chancesForParentA = 0.5f; // 50%
 
@@ -26,26 +26,23 @@ reproduce(
 
   for (uint32_t ii = 0; ii < inTotalWeights; ++ii) {
     if (randomCallback() < chancesForParentA)
-      outOffspring.connectionsWeights.push_back(
-        inParentA.connectionsWeights.at(ii));
+      outOffspring.connectionsWeights.push_back(inParentA.connectionsWeights.at(ii));
     else
-      outOffspring.connectionsWeights.push_back(
-        inParentB.connectionsWeights.at(ii));
+      outOffspring.connectionsWeights.push_back(inParentB.connectionsWeights.at(ii));
   }
 }
 
 void
 mutate(
-  Genome& inGenome, uint32_t inMinimumMutation, float inMutationMaxChance,
-  float inMutationMaxEffect, const GetRandomCallback& randomCallback) {
+  Genome& inGenome, uint32_t inMinimumMutation, float inMutationMaxChance, float inMutationMaxEffect,
+  const GetRandomCallback& randomCallback) {
   uint32_t totalMutation = 0;
 
   do {
 
     for (float& weight : inGenome.connectionsWeights) {
       if (randomCallback() < inMutationMaxChance) {
-        weight +=
-          randomCallback() * inMutationMaxEffect * 2.0f - inMutationMaxEffect;
+        weight += randomCallback() * inMutationMaxEffect * 2.0f - inMutationMaxEffect;
 
         totalMutation += 1;
       }
@@ -65,10 +62,9 @@ compare(const Genome& genomeA, const Genome& genomeB, uint32_t inTotalWeights) {
 
   if (weightsA.size() != weightsB.size()) {
     D_THROW(
-      std::runtime_error,
-      "comparing genomes with non-matching sizes"
-        << ", genomeA connections weights size " << weightsA.size()
-        << ", genomeB connections weights size " << weightsB.size());
+      std::runtime_error, "comparing genomes with non-matching sizes"
+                            << ", genomeA connections weights size " << weightsA.size()
+                            << ", genomeB connections weights size " << weightsB.size());
   }
 
   float weightDiff = 0.0f;
@@ -94,9 +90,7 @@ compare(const Genome& genomeA, const Genome& genomeB, uint32_t inTotalWeights) {
 }
 
 void
-randomizeConnectionWeights(
-  Genome& inGenome, uint32_t inTotalWeights,
-  const GetRandomCallback& randomCallback) {
+randomizeConnectionWeights(Genome& inGenome, uint32_t inTotalWeights, const GetRandomCallback& randomCallback) {
   inGenome.connectionsWeights.clear();
   inGenome.connectionsWeights.resize(inTotalWeights);
   for (float& weight : inGenome.connectionsWeights)

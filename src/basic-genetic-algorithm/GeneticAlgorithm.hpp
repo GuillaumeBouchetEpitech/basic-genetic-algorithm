@@ -43,8 +43,7 @@ public: // method(s)
   bool breedPopulation();
 
 public: // method(s)
-  void setNeuralNetwork(
-    const AbstractGenome& inGenome, NeuralNetwork& inNeuralNetwork);
+  void setNeuralNetwork(const AbstractGenome& inGenome, NeuralNetwork& inNeuralNetwork);
 
 private: // method(s)
   void _getBestGenomes(Genomes& outGenomes) const;

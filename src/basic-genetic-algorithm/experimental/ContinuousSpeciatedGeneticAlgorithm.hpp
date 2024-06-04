@@ -46,8 +46,7 @@ public:
   using GenomeWeakRef = GenomesPool::weak_ref;
 
 public:
-  using GenomesAncestors =
-    gero::dynamic_heap_array<GenomesAncestor, GenomesAncestor, 128>;
+  using GenomesAncestors = gero::dynamic_heap_array<GenomesAncestor, GenomesAncestor, 128>;
 
 private: // attributes
   Definition _def;

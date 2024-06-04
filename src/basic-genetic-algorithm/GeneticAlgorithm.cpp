@@ -15,8 +15,7 @@ GeneticAlgorithm::initialize(const Definition& inDef) {
   if (_def.totalGenomes < 10)
     D_THROW(
       std::invalid_argument, "received invalid number of genomes"
-                               << ", input=" << _def.totalGenomes
-                               << ", expected >= 10");
+                               << ", input=" << _def.totalGenomes << ", expected >= 10");
 
   if (!_def.topology.isValid())
     D_THROW(std::invalid_argument, "received invalid topology");
@@ -30,16 +29,14 @@ GeneticAlgorithm::initialize(const Definition& inDef) {
 
   _genomes.resize(_def.totalGenomes);
 
-  const uint32_t totalElites =
-    std::max(5U, uint32_t(float(_def.totalGenomes) * 0.1f)); // 10%
+  const uint32_t totalElites = std::max(5U, uint32_t(float(_def.totalGenomes) * 0.1f)); // 10%
   _eliteGenomes.resize(totalElites);
 
   gero::rng::RNG::ensureRandomSeed();
 
   for (auto& currGenome : _genomes) {
 
-    GenomeHelpers::randomizeConnectionWeights(
-      currGenome, _def.topology.getTotalWeights(), _def.getRandomCallback);
+    GenomeHelpers::randomizeConnectionWeights(currGenome, _def.topology.getTotalWeights(), _def.getRandomCallback);
   }
 }
 
@@ -54,8 +51,7 @@ GeneticAlgorithm::breedPopulation() {
   const auto& latestBestGenome = latestBestGenomes.front();
 
   const auto& oldBestGenome = _eliteGenomes.front();
-  const bool isSmarterGeneration =
-    (latestBestGenome.fitness > oldBestGenome.fitness);
+  const bool isSmarterGeneration = (latestBestGenome.fitness > oldBestGenome.fitness);
 
 #if 0
 
@@ -134,16 +130,11 @@ GeneticAlgorithm::breedPopulation() {
         parentsPairsGenomes.push_back({ii, jj});
 
     // sort the possible "parents" pair by summed fitness
-    auto cmpFunc =
-      [&latestBestGenomes](const ParentPair& a, const ParentPair& b) {
-        float fitnessPairA =
-          (latestBestGenomes.at(a.parentA).fitness +
-           latestBestGenomes.at(a.parentB).fitness);
-        float fitnessPairB =
-          (latestBestGenomes.at(b.parentA).fitness +
-           latestBestGenomes.at(b.parentB).fitness);
-        return (fitnessPairA > fitnessPairB); // <= the higher the better
-      };
+    auto cmpFunc = [&latestBestGenomes](const ParentPair& a, const ParentPair& b) {
+      float fitnessPairA = (latestBestGenomes.at(a.parentA).fitness + latestBestGenomes.at(a.parentB).fitness);
+      float fitnessPairB = (latestBestGenomes.at(b.parentA).fitness + latestBestGenomes.at(b.parentB).fitness);
+      return (fitnessPairA > fitnessPairB); // <= the higher the better
+    };
     std::sort(parentsPairsGenomes.begin(), parentsPairsGenomes.end(), cmpFunc);
 
     int32_t totalOffspringLeft = int32_t(float(_genomes.size()) * 0.9f);
@@ -162,12 +153,10 @@ GeneticAlgorithm::breedPopulation() {
       Genome newOffspring;
 
       GenomeHelpers::reproduce(
-        parentGenomeA, parentGenomeB, _def.topology.getTotalWeights(),
-        newOffspring, _def.getRandomCallback);
+        parentGenomeA, parentGenomeB, _def.topology.getTotalWeights(), newOffspring, _def.getRandomCallback);
 
       GenomeHelpers::mutate(
-        newOffspring, _def.minimumMutations, _def.mutationMaxChance,
-        _def.mutationMaxEffect, _def.getRandomCallback);
+        newOffspring, _def.minimumMutations, _def.mutationMaxChance, _def.mutationMaxEffect, _def.getRandomCallback);
 
       // move, no realloc of the weights
       // offsprings.push_back(std::move(newOffspring));
@@ -188,8 +177,7 @@ GeneticAlgorithm::breedPopulation() {
 
       newGenome.connectionsWeights.reserve(totalWeights); // pre-allocate
       for (uint32_t jj = 0; jj < totalWeights; ++jj)
-        newGenome.connectionsWeights.push_back(
-          gero::rng::RNG::getRangedValue(-1.0f, 1.0f));
+        newGenome.connectionsWeights.push_back(gero::rng::RNG::getRangedValue(-1.0f, 1.0f));
 
       // move, no realloc of the weights
       offsprings.push_back(std::move(newGenome));
@@ -260,7 +248,6 @@ GeneticAlgorithm::getGenerationNumber() const {
 // GeneticAlgorithm::getDefinition() const {
 //   return _def;
 // }
-
 
 //
 

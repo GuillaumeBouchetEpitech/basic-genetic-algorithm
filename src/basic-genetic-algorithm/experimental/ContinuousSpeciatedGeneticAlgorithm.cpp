@@ -18,14 +18,12 @@ ContinuousSpeciatedGeneticAlgorithm::Definition::validate() const {
   if (genomePoolSize == 0)
     D_THROW(
       std::invalid_argument, "received invalid genome pool size"
-                               << ", input=" << genomePoolSize
-                               << ", expected > 0");
+                               << ", input=" << genomePoolSize << ", expected > 0");
 
   if (initalTotalAncestors < 8)
     D_THROW(
       std::invalid_argument, "received invalid inital total of ancestors"
-                               << ", input=" << initalTotalAncestors
-                               << ", expected >= 8");
+                               << ", input=" << initalTotalAncestors << ", expected >= 8");
 
   if (!topology.isValid())
     D_THROW(std::invalid_argument, "received invalid topology");
@@ -50,30 +48,25 @@ ContinuousSpeciatedGeneticAlgorithm::initialize(const Definition& def) {
 
   {
     GenomesAncestor newAncestor(_currentAncestorId++);
-    GenomeHelpers::randomizeConnectionWeights(
-      newAncestor.genome, totalWeights, _def.getRandomCallback);
+    GenomeHelpers::randomizeConnectionWeights(newAncestor.genome, totalWeights, _def.getRandomCallback);
 
     _genomesAncestors.push_back(newAncestor);
   }
 
-  for (uint32_t ancestorIndex = 1; ancestorIndex < _def.initalTotalAncestors;
-       ++ancestorIndex) {
+  for (uint32_t ancestorIndex = 1; ancestorIndex < _def.initalTotalAncestors; ++ancestorIndex) {
 
     Genome currGenome;
     Genome mostDiverseGenome;
     float mostDiverseDiff = 0.0f;
 
-    for (uint32_t attempt = 0; attempt < _def.initalDiversityAttempt;
-         ++attempt) {
+    for (uint32_t attempt = 0; attempt < _def.initalDiversityAttempt; ++attempt) {
 
-      GenomeHelpers::randomizeConnectionWeights(
-        currGenome, totalWeights, _def.getRandomCallback);
+      GenomeHelpers::randomizeConnectionWeights(currGenome, totalWeights, _def.getRandomCallback);
 
       float leastDiverseDiff = 0.0f;
       for (const GenomesAncestor& currAncestor : _genomesAncestors) {
 
-        const float currDiff =
-          GenomeHelpers::compare(currGenome, currAncestor.genome, totalWeights);
+        const float currDiff = GenomeHelpers::compare(currGenome, currAncestor.genome, totalWeights);
 
         if (leastDiverseDiff > currDiff)
           leastDiverseDiff = currDiff;
@@ -113,8 +106,7 @@ ContinuousSpeciatedGeneticAlgorithm::acquireNewGenome() {
       D_THROW(std::runtime_error, "no more genomes in the pool");
 
     GenomeHelpers::randomizeConnectionWeights(
-      *newOffspringRef, _def.topology.getTotalWeights(),
-      _def.getRandomCallback);
+      *newOffspringRef, _def.topology.getTotalWeights(), _def.getRandomCallback);
 
     return newOffspringRef;
   }
@@ -122,8 +114,7 @@ ContinuousSpeciatedGeneticAlgorithm::acquireNewGenome() {
   // sort ancestors by priority
 
   std::sort(
-    _genomesAncestors.begin(), _genomesAncestors.end(),
-    [](const GenomesAncestor& lhs, const GenomesAncestor& rhs) {
+    _genomesAncestors.begin(), _genomesAncestors.end(), [](const GenomesAncestor& lhs, const GenomesAncestor& rhs) {
       // higher is better
       return lhs.getPriorityScore() > rhs.getPriorityScore();
     });
@@ -146,19 +137,16 @@ ContinuousSpeciatedGeneticAlgorithm::acquireNewGenome() {
   const Genome& parentGenomeB = parentB.getGenome(_def.getRandomCallback);
 
   GenomeHelpers::reproduce(
-    parentGenomeA, parentGenomeB, _def.topology.getTotalWeights(),
-    *newOffspringRef, _def.getRandomCallback);
+    parentGenomeA, parentGenomeB, _def.topology.getTotalWeights(), *newOffspringRef, _def.getRandomCallback);
 
   GenomeHelpers::mutate(
-    *newOffspringRef, _def.minimumMutations, _def.mutationMaxChance,
-    _def.mutationMaxEffect, _def.getRandomCallback);
+    *newOffspringRef, _def.minimumMutations, _def.mutationMaxChance, _def.mutationMaxEffect, _def.getRandomCallback);
 
   return newOffspringRef;
 }
 
 void
-ContinuousSpeciatedGeneticAlgorithm::discardGenome(
-  GenomeWeakRef inGenomeRef, float inFitness) {
+ContinuousSpeciatedGeneticAlgorithm::discardGenome(GenomeWeakRef inGenomeRef, float inFitness) {
   if (!inGenomeRef.is_active())
     D_THROW(std::invalid_argument, "ref not active ancestors");
 
@@ -173,11 +161,9 @@ ContinuousSpeciatedGeneticAlgorithm::discardGenome(
   int32_t closestMatchIndex = -1;
   float closestMatchDiff = 1000.0f;
 
-  for (int32_t tmpIndex = 0; tmpIndex < int32_t(_genomesAncestors.size());
-       ++tmpIndex) {
+  for (int32_t tmpIndex = 0; tmpIndex < int32_t(_genomesAncestors.size()); ++tmpIndex) {
 
-    const float currDiff = GenomeHelpers::compare(
-      currGenome, _genomesAncestors[tmpIndex].genome, totalWeights);
+    const float currDiff = GenomeHelpers::compare(currGenome, _genomesAncestors[tmpIndex].genome, totalWeights);
 
     if (closestMatchDiff > currDiff) {
       closestMatchDiff = currDiff;

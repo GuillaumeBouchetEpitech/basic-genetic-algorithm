@@ -28,7 +28,8 @@ constexpr uint32_t k_frameRate = 0;
 } // namespace
 
 Application::Application(const Definition& def)
-  : SDLWindowWrapper("Car Demo", def.width, def.height, k_frameRate, SDLWindowWrapper::OpenGlEsVersion::v3, k_canResize) {
+  : SDLWindowWrapper(
+      "Car Demo", def.width, def.height, k_frameRate, SDLWindowWrapper::OpenGlEsVersion::v3, k_canResize) {
 
   KeyboardManager::create();
   MouseManager::create();

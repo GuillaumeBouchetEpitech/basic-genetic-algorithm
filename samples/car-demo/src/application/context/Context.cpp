@@ -20,8 +20,7 @@
 
 Context* Context::_instance = nullptr;
 
-Context::~Context() {
-}
+Context::~Context() {}
 
 void
 Context::initialize(unsigned int width, unsigned int height) {
@@ -55,7 +54,6 @@ Context::initialize(unsigned int width, unsigned int height) {
 
   graphic.hud.textRenderer.initialize("../../thirdparties/dependencies/geronimo/src");
 
-
   {
     constexpr uint32_t k_totalGenomes = 300;
 
@@ -83,11 +81,9 @@ Context::initialize(unsigned int width, unsigned int height) {
 
     logic.allCarAgents.resize(k_totalGenomes);
     for (auto& currCar : logic.allCarAgents) {
-		  currCar.reset(logic.circuit);
+      currCar.reset(logic.circuit);
     }
-
   }
-
 }
 
 //

@@ -34,8 +34,7 @@ public:
   void computePriorityScore(float inReusedAncestorScorePenalty);
 
 public:
-  const Genome&
-  getGenome(const GenomeHelpers::GetRandomCallback& callback) const;
+  const Genome& getGenome(const GenomeHelpers::GetRandomCallback& callback) const;
   float getFitness() const;
   float getPriorityScore() const;
   bool operator<(const GenomesAncestor& other) const;

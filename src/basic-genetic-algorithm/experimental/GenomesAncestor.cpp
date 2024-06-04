@@ -5,9 +5,7 @@
 
 #include <algorithm> // std::sort
 
-GenomesAncestor::GenomesAncestor(uint64_t inId) : id(inId) {
-  elites.reserve(4);
-}
+GenomesAncestor::GenomesAncestor(uint64_t inId) : id(inId) { elites.reserve(4); }
 
 // GenomesAncestor::GenomesAncestor(const GenomesAncestor& other)
 // {
@@ -68,8 +66,7 @@ GenomesAncestor::GenomesAncestor(uint64_t inId) : id(inId) {
 // }
 
 void
-GenomesAncestor::addNewElite(
-  const Genome& inGenome, float inReusedAncestorScorePenalty) {
+GenomesAncestor::addNewElite(const Genome& inGenome, float inReusedAncestorScorePenalty) {
   if (elites.empty()) {
     totalReused += 1;
     elites.push_back(inGenome);
@@ -81,11 +78,10 @@ GenomesAncestor::addNewElite(
     if (newOneIsFitter) {
       elites.push_back(inGenome);
 
-      std::sort(
-        elites.begin(), elites.end(), [](const Genome& lhs, const Genome& rhs) {
-          // higher is better
-          return lhs.fitness > rhs.fitness;
-        });
+      std::sort(elites.begin(), elites.end(), [](const Genome& lhs, const Genome& rhs) {
+        // higher is better
+        return lhs.fitness > rhs.fitness;
+      });
 
       while (elites.size() > 3)
         elites.pop_back();
@@ -101,13 +97,11 @@ GenomesAncestor::addNewElite(
 
 void
 GenomesAncestor::computePriorityScore(float inReusedAncestorScorePenalty) {
-  cachedPriorityScore =
-    getFitness() - float(totalReused) * inReusedAncestorScorePenalty;
+  cachedPriorityScore = getFitness() - float(totalReused) * inReusedAncestorScorePenalty;
 }
 
 const Genome&
-GenomesAncestor::getGenome(
-  const GenomeHelpers::GetRandomCallback& randomCallback) const {
+GenomesAncestor::getGenome(const GenomeHelpers::GetRandomCallback& randomCallback) const {
   if (elites.empty())
     return genome;
 

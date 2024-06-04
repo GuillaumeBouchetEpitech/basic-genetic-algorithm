@@ -31,8 +31,7 @@ public: // ctor/dtor
   virtual ~NeuralNetwork() = default;
 
 public: // methods
-  void compute(
-    const std::vector<float>& inputValues, std::vector<float>& outputValues) const;
+  void compute(const std::vector<float>& inputValues, std::vector<float>& outputValues) const;
 
 public: // setter
   void setConnectionsWeights(const std::vector<float>& inWeights);

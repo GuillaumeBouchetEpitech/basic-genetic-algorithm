@@ -10,15 +10,15 @@
 #include "geronimo/graphics/advanced-concept/widgets/renderHistoricalTimeData.hpp"
 #include "geronimo/system/ErrorHandler.hpp"
 #include "geronimo/system/TraceLogger.hpp"
+#include "geronimo/system/easing/GenericEasing.hpp"
 #include "geronimo/system/getStreamStr.hpp"
 #include "geronimo/system/math/angles.hpp"
-#include "geronimo/system/math/safe-normalize.hpp"
-#include "geronimo/system/math/rotateVec2.hpp"
-#include "geronimo/system/math/clamp.hpp"
-#include "geronimo/system/math/lerp.hpp"
-#include "geronimo/system/math/constants.hpp"
 #include "geronimo/system/math/circleCircleIntersectionPoints.hpp"
-#include "geronimo/system/easing/GenericEasing.hpp"
+#include "geronimo/system/math/clamp.hpp"
+#include "geronimo/system/math/constants.hpp"
+#include "geronimo/system/math/lerp.hpp"
+#include "geronimo/system/math/rotateVec2.hpp"
+#include "geronimo/system/math/safe-normalize.hpp"
 #include "geronimo/system/string-utils/stream-formatter.hpp"
 
 #include "geronimo/helpers/GLMath.hpp"
@@ -93,24 +93,16 @@ Scene::_renderScene() {
       {
         const glm::vec3 color = glm::vec3(0.5f, 0.5f, 1.0f);
         const auto& walls = context.logic.circuit.getWalls();
-        for (const Line& currLine : walls)
-        {
-          wireFrames.pushLine(
-            glm::vec3(currLine.posA, 0),
-            glm::vec3(currLine.posB, 0),
-            color);
+        for (const Line& currLine : walls) {
+          wireFrames.pushLine(glm::vec3(currLine.posA, 0), glm::vec3(currLine.posB, 0), color);
         }
       }
 
       {
         const glm::vec3 color = glm::vec3(0.5f, 0.5f, 0.5f);
         const auto& checkpoints = context.logic.circuit.getCheckpoints();
-        for (const Line& currLine : checkpoints)
-        {
-          wireFrames.pushLine(
-            glm::vec3(currLine.posA, 0),
-            glm::vec3(currLine.posB, 0),
-            color);
+        for (const Line& currLine : checkpoints) {
+          wireFrames.pushLine(glm::vec3(currLine.posA, 0), glm::vec3(currLine.posB, 0), color);
         }
       }
 
@@ -131,10 +123,14 @@ Scene::_renderScene() {
       //     gero::math::rotate2d(pos3d + glm::vec3(+20-2,+10-2,1), currCar.getPosition(), currCar.getAngle()),
       //     gero::math::rotate2d(pos3d + glm::vec3(-20+2,+10-2,1), currCar.getPosition(), currCar.getAngle()),
       //   }};
-      //   // const glm::vec3 negX_negY = gero::math::rotate2d(pos3d + glm::vec3(-20,-10,0), currCar.getPosition(), currCar.getAngle());
-      //   // const glm::vec3 posX_negY = gero::math::rotate2d(pos3d + glm::vec3(+20,-10,0), currCar.getPosition(), currCar.getAngle());
-      //   // const glm::vec3 posX_posY = gero::math::rotate2d(pos3d + glm::vec3(+20,+10,0), currCar.getPosition(), currCar.getAngle());
-      //   // const glm::vec3 negX_posY = gero::math::rotate2d(pos3d + glm::vec3(-20,+10,0), currCar.getPosition(), currCar.getAngle());
+      //   // const glm::vec3 negX_negY = gero::math::rotate2d(pos3d + glm::vec3(-20,-10,0), currCar.getPosition(),
+      //   currCar.getAngle());
+      //   // const glm::vec3 posX_negY = gero::math::rotate2d(pos3d + glm::vec3(+20,-10,0), currCar.getPosition(),
+      //   currCar.getAngle());
+      //   // const glm::vec3 posX_posY = gero::math::rotate2d(pos3d + glm::vec3(+20,+10,0), currCar.getPosition(),
+      //   currCar.getAngle());
+      //   // const glm::vec3 negX_posY = gero::math::rotate2d(pos3d + glm::vec3(-20,+10,0), currCar.getPosition(),
+      //   currCar.getAngle());
 
       //   const glm::vec3 color = currCar.isAlive() ? glm::vec3(0.55f,0.55f,1.0f) : glm::vec3(0.5f,0.0f,0.0f);
 
@@ -178,8 +174,7 @@ Scene::_renderScene() {
 
       // };
 
-      for (std::size_t ii = 0; ii < context.logic.allCarAgents.size(); ++ii)
-      {
+      for (std::size_t ii = 0; ii < context.logic.allCarAgents.size(); ++ii) {
         const auto& currCar = context.logic.allCarAgents[ii];
 
         // _renderCar(currCar, false);
@@ -189,35 +184,34 @@ Scene::_renderScene() {
         const glm::vec3 pos3d = glm::vec3(currCar.getPosition(), isLeader ? 2 : 0);
 
         std::array<glm::vec3, 4> _vertices1 = {{
-          gero::math::rotate2d(pos3d + glm::vec3(-20,-10,0), currCar.getPosition(), currCar.getAngle()),
-          gero::math::rotate2d(pos3d + glm::vec3(+20,-10,0), currCar.getPosition(), currCar.getAngle()),
-          gero::math::rotate2d(pos3d + glm::vec3(+20,+10,0), currCar.getPosition(), currCar.getAngle()),
-          gero::math::rotate2d(pos3d + glm::vec3(-20,+10,0), currCar.getPosition(), currCar.getAngle()),
+          gero::math::rotate2d(pos3d + glm::vec3(-20, -10, 0), currCar.getPosition(), currCar.getAngle()),
+          gero::math::rotate2d(pos3d + glm::vec3(+20, -10, 0), currCar.getPosition(), currCar.getAngle()),
+          gero::math::rotate2d(pos3d + glm::vec3(+20, +10, 0), currCar.getPosition(), currCar.getAngle()),
+          gero::math::rotate2d(pos3d + glm::vec3(-20, +10, 0), currCar.getPosition(), currCar.getAngle()),
         }};
         std::array<glm::vec3, 4> _vertices2 = {{
-          gero::math::rotate2d(pos3d + glm::vec3(-20+2,-10+2,1), currCar.getPosition(), currCar.getAngle()),
-          gero::math::rotate2d(pos3d + glm::vec3(+20-2,-10+2,1), currCar.getPosition(), currCar.getAngle()),
-          gero::math::rotate2d(pos3d + glm::vec3(+20-2,+10-2,1), currCar.getPosition(), currCar.getAngle()),
-          gero::math::rotate2d(pos3d + glm::vec3(-20+2,+10-2,1), currCar.getPosition(), currCar.getAngle()),
+          gero::math::rotate2d(pos3d + glm::vec3(-20 + 2, -10 + 2, 1), currCar.getPosition(), currCar.getAngle()),
+          gero::math::rotate2d(pos3d + glm::vec3(+20 - 2, -10 + 2, 1), currCar.getPosition(), currCar.getAngle()),
+          gero::math::rotate2d(pos3d + glm::vec3(+20 - 2, +10 - 2, 1), currCar.getPosition(), currCar.getAngle()),
+          gero::math::rotate2d(pos3d + glm::vec3(-20 + 2, +10 - 2, 1), currCar.getPosition(), currCar.getAngle()),
         }};
-        // const glm::vec3 negX_negY = gero::math::rotate2d(pos3d + glm::vec3(-20,-10,0), currCar.getPosition(), currCar.getAngle());
-        // const glm::vec3 posX_negY = gero::math::rotate2d(pos3d + glm::vec3(+20,-10,0), currCar.getPosition(), currCar.getAngle());
-        // const glm::vec3 posX_posY = gero::math::rotate2d(pos3d + glm::vec3(+20,+10,0), currCar.getPosition(), currCar.getAngle());
-        // const glm::vec3 negX_posY = gero::math::rotate2d(pos3d + glm::vec3(-20,+10,0), currCar.getPosition(), currCar.getAngle());
+        // const glm::vec3 negX_negY = gero::math::rotate2d(pos3d + glm::vec3(-20,-10,0), currCar.getPosition(),
+        // currCar.getAngle()); const glm::vec3 posX_negY = gero::math::rotate2d(pos3d + glm::vec3(+20,-10,0),
+        // currCar.getPosition(), currCar.getAngle()); const glm::vec3 posX_posY = gero::math::rotate2d(pos3d +
+        // glm::vec3(+20,+10,0), currCar.getPosition(), currCar.getAngle()); const glm::vec3 negX_posY =
+        // gero::math::rotate2d(pos3d + glm::vec3(-20,+10,0), currCar.getPosition(), currCar.getAngle());
 
         const glm::vec3 color = currCar.isAlive()
-          ? isLeader
-            ? glm::vec3(0.0f,1.0f,0.0f)
-            : glm::vec3(0.55f,0.55f,1.0f)
-          : glm::vec3(0.5f,0.0f,0.0f);
+                                  ? isLeader ? glm::vec3(0.0f, 1.0f, 0.0f) : glm::vec3(0.55f, 0.55f, 1.0f)
+                                  : glm::vec3(0.5f, 0.0f, 0.0f);
 
         // wireFrames.pushLine(negX_negY, posX_negY, color);
         // wireFrames.pushLine(posX_negY, posX_posY, color);
         // wireFrames.pushLine(posX_posY, negX_posY, color);
         // wireFrames.pushLine(negX_posY, negX_negY, color);
 
-        triangles.pushTriangle(_vertices1[0], _vertices1[2], _vertices1[1], glm::vec4(0.7f,0.7f,0.7f, 1.0f));
-        triangles.pushTriangle(_vertices1[0], _vertices1[3], _vertices1[2], glm::vec4(0.7f,0.7f,0.7f, 1.0f));
+        triangles.pushTriangle(_vertices1[0], _vertices1[2], _vertices1[1], glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+        triangles.pushTriangle(_vertices1[0], _vertices1[3], _vertices1[2], glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
 
         triangles.pushTriangle(_vertices2[0], _vertices2[2], _vertices2[1], glm::vec4(color, 1.0f));
         triangles.pushTriangle(_vertices2[0], _vertices2[3], _vertices2[2], glm::vec4(color, 1.0f));
@@ -232,12 +226,11 @@ Scene::_renderScene() {
         }
 
         auto colorEasing = gero::easing::GenericEasing<5, glm::vec3>()
-          .push(0.00f, glm::vec3(1.0f,0.0f,0.0f))
-          .push(0.25f, glm::vec3(1.0f,0.5f,0.2f))
-          .push(0.50f, glm::vec3(1.0f,1.0f,0.0f))
-          .push(0.75f, glm::vec3(0.0f,1.0f,0.0f))
-          .push(1.00f, glm::vec3(0.0f,1.0f,0.0f))
-          ;
+                             .push(0.00f, glm::vec3(1.0f, 0.0f, 0.0f))
+                             .push(0.25f, glm::vec3(1.0f, 0.5f, 0.2f))
+                             .push(0.50f, glm::vec3(1.0f, 1.0f, 0.0f))
+                             .push(0.75f, glm::vec3(0.0f, 1.0f, 0.0f))
+                             .push(1.00f, glm::vec3(0.0f, 1.0f, 0.0f));
 
         for (const auto& currSensor : currCar.getSensors()) {
 
@@ -247,9 +240,7 @@ Scene::_renderScene() {
 
           wireFrames.pushLine(glm::vec3(currSensor.line.posA, 0), glm::vec3(dstPos, 0), sensorColor);
         }
-
       }
-
 
       // if (context.graphic.scene.leaderIndex >= 0)
       // {
@@ -257,32 +248,23 @@ Scene::_renderScene() {
 
       //   _renderCar(currCar, true);
       // }
-
     }
 
     graphic.stackRenderers.flush();
   }
 
-
   {
 
-    for (const auto& trail : context.logic.trails)
-    {
-      for (const auto& line : trail)
-      {
+    for (const auto& trail : context.logic.trails) {
+      for (const auto& line : trail) {
         wireFrames.pushLine(
-          glm::vec3(line.posA.x, line.posA.y, 0.0f),
-          glm::vec3(line.posB.x, line.posB.y, 0.0f),
-          glm::vec3(0.35f, 0.35f, 0.35f)
-        );
+          glm::vec3(line.posA.x, line.posA.y, 0.0f), glm::vec3(line.posB.x, line.posB.y, 0.0f),
+          glm::vec3(0.35f, 0.35f, 0.35f));
       }
     }
 
     graphic.stackRenderers.flush();
   }
-
-
-
 }
 
 void
@@ -320,10 +302,10 @@ Scene::_renderHud() {
 
       const auto& timeDataMap = context.logic.performanceProfiler.getHistoricalTimeDataMap();
 
-      const gero::graphics::TextRenderer::State state0 = {glm::vec4(1.0f,1.0f,1.0f,1), glm::vec4(0,0,0,1)};
-      const gero::graphics::TextRenderer::State state1 = {glm::vec4(1.0f,1.0f,0.5f,1), glm::vec4(0,0,0,1)};
-      const gero::graphics::TextRenderer::State state2 = {glm::vec4(0.5f,1.0f,0.5f,1), glm::vec4(0,0,0,1)};
-      const gero::graphics::TextRenderer::State state3 = {glm::vec4(1.0f,0.5f,0.5f,1), glm::vec4(0,0,0,1)};
+      const gero::graphics::TextRenderer::State state0 = {glm::vec4(1.0f, 1.0f, 1.0f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::TextRenderer::State state1 = {glm::vec4(1.0f, 1.0f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::TextRenderer::State state2 = {glm::vec4(0.5f, 1.0f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
+      const gero::graphics::TextRenderer::State state3 = {glm::vec4(1.0f, 0.5f, 0.5f, 1), glm::vec4(0, 0, 0, 1)};
 
       std::stringstream sstr;
       for (const auto& timeData : timeDataMap) {
@@ -372,13 +354,7 @@ Scene::_renderHud() {
       textRenderer.setHorizontalTextAlign(TextRenderer::HorizontalTextAlign::left);
       textRenderer.setVerticalTextAlign(TextRenderer::VerticalTextAlign::bottom);
 
-      textRenderer.pushText(textPos, str,
-        state0,
-        state1,
-        state2,
-        state3
-        );
-
+      textRenderer.pushText(textPos, str, state0, state1, state2, state3);
     }
 
     textRenderer.setMatricesData(matricesData);
