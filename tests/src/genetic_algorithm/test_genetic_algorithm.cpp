@@ -40,8 +40,8 @@ void runTest(
 	GeneticAlgorithm genAlgo;
   genAlgo.initialize(genAlgoDef);
 
-	constexpr float k_maximumFitness = float(inAllTrainingData.size());
-	constexpr float k_minimumFitness = k_maximumFitness - 0.05f;
+	const float k_maximumFitness = float(inAllTrainingData.size());
+	const float k_minimumFitness = k_maximumFitness - 0.05f;
 
   std::vector<float> tmpInputs;
   std::vector<float> tmpOutputs;
@@ -84,6 +84,11 @@ void runTest(
     const AbstractGenome& best = genAlgo.getBestGenome();
     if (best.getFitness() >= k_minimumFitness)
       break;
+
+    D_MYERR(
+      "generation " << genAlgo.getGenerationNumber()
+      << ", fitness " << best.getFitness() << " / " << k_minimumFitness
+      << " (" << std::floor(best.getFitness() / k_minimumFitness * 100.0) << "%)");
 
     ASSERT_LE(genAlgo.getGenerationNumber(), maxGenerations)
       << "too slow, best was "

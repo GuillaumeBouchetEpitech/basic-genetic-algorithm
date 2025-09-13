@@ -58,7 +58,7 @@ func_handle_third_parties() {
     echo "###"
     echo ""
 
-    EMSDK_VERSION=3.1.44
+    EMSDK_VERSION=3.1.74
 
     if [ -z "${EMSDK}" ]; then
 
@@ -135,7 +135,7 @@ func_handle_third_parties() {
       "GERONIMO" \
       "geronimo" \
       "GuillaumeBouchetEpitech/geronimo" \
-      "v0.0.16" \
+      "v0.0.17" \
       "not-interactive"
 
     tree -L 1 "$DIR_DEPENDENCIES" || exit 1

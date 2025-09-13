@@ -47,7 +47,7 @@ fi
 reset
 # rm -rf obj/src/system/
 rm -rf obj
-make -j6
+make -j6 || exit 1
 
 # ./bin/exec
 valgrind --leak-check=full ./bin/exec

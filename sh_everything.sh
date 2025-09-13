@@ -50,7 +50,7 @@ echo "###"
 echo "###"
 echo ""
 
-EMSDK_VERSION=3.1.44
+EMSDK_VERSION=3.1.74
 
 if [ -z "${EMSDK}" ]; then
 
@@ -70,13 +70,13 @@ if [ -z "${EMSDK}" ]; then
     $EMSDK_VERSION \
     "not-interactive"
 
-  cd $DIR_DEPENDENCIES/emsdk
+  cd "$DIR_DEPENDENCIES/emsdk" || exit 1
 
 else
 
   echo " -> already installed"
 
-  cd $EMSDK
+  cd "$EMSDK" || exit 1
 fi
 
 echo " -> ensuring the correct version is installed"
@@ -91,7 +91,7 @@ echo " -> activating the correct version"
 
 # em++ --clear-cache
 
-cd $DIR_ROOT
+cd "$DIR_ROOT" || exit 1
 
 echo " -> success"
 
@@ -133,18 +133,18 @@ yes)
     "GERONIMO" \
     "geronimo" \
     "GuillaumeBouchetEpitech/geronimo" \
-    "v0.0.16" \
+    "v0.0.17" \
     "not-interactive"
 
   echo "building thirdparties libraries"
 
-  cd ./thirdparties/dependencies/geronimo
+  cd "./thirdparties/dependencies/geronimo" || exit 1
 
   sh sh_everything.sh
 
   export DIR_LIB_GERONIMO=$DIR_ROOT/thirdparties/dependencies/geronimo
 
-  cd $DIR_ROOT
+  cd "$DIR_ROOT" || exit 1
 
   ;;
 esac
