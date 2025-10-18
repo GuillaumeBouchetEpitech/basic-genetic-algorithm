@@ -127,7 +127,7 @@ func_handle_third_parties() {
       "BASIC_GENETIC_ALGORITHM" \
       "basic-genetic-algorithm" \
       "GuillaumeBouchetEpitech/basic-genetic-algorithm" \
-      "v0.0.7" \
+      "v0.0.8" \
       "not-interactive"
 
     sh sh_install_one_git_thirdparty.sh \
@@ -135,7 +135,7 @@ func_handle_third_parties() {
       "GERONIMO" \
       "geronimo" \
       "GuillaumeBouchetEpitech/geronimo" \
-      "v0.0.17" \
+      "v0.0.18" \
       "not-interactive"
 
     tree -L 1 "$DIR_DEPENDENCIES" || exit 1

@@ -133,7 +133,7 @@ yes)
     "GERONIMO" \
     "geronimo" \
     "GuillaumeBouchetEpitech/geronimo" \
-    "v0.0.17" \
+    "v0.0.18" \
     "not-interactive"
 
   echo "building thirdparties libraries"
