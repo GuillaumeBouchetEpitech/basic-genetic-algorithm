@@ -68,7 +68,7 @@ if [ -z "${EMSDK}" ]; then
     "emsdk" \
     "emscripten-core/emsdk" \
     $EMSDK_VERSION \
-    "not-interactive"
+    "not-interactive" || exit 1
 
   cd "$DIR_DEPENDENCIES/emsdk" || exit 1
 
@@ -134,7 +134,7 @@ yes)
     "geronimo" \
     "GuillaumeBouchetEpitech/geronimo" \
     "v0.0.18" \
-    "not-interactive"
+    "not-interactive" || exit 1
 
   echo "building thirdparties libraries"
 

@@ -74,8 +74,12 @@ endif
 SRC_FILES+=	\
 	$(wildcard \
 		$(DIR_SRC)/basic-genetic-algorithm/*.cpp \
-		$(DIR_SRC)/basic-genetic-algorithm/experimental/*.cpp \
 		)
+
+# SRC_FILES+=	\
+# 	$(wildcard \
+# 		$(DIR_SRC)/basic-genetic-algorithm/experimental/*.cpp \
+# 		)
 
 #
 
