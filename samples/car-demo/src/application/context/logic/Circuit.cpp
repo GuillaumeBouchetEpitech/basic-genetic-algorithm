@@ -41,7 +41,7 @@ Circuit::loadMap(const std::string& filename) {
   std::vector<rawCheckpoint> rawCheckpoints;
 
   glm::vec2 lastCenter = {0, 0};
-  float lastAngle = 0.0f;
+  // float lastAngle = 0.0f;
 
   while (ifs.good()) {
     std::getline(ifs, line);

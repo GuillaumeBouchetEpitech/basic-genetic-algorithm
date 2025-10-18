@@ -42,6 +42,7 @@ public: // ctor/dtor
 public: // methods
   void update(float step, const Circuit& circuit, const NeuralNetwork& nn);
   void reset(const Circuit& circuit);
+  void reset(const glm::vec2& pos, float angle);
 
 private: // methods
   void updateSensors();

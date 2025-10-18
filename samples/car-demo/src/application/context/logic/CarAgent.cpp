@@ -18,8 +18,8 @@ namespace {
 constexpr float k_maxLife = 25.0f;
 }
 
-CarAgent::CarAgent() : _angle(0.0f), _fitness(0.0f), _alive(true), _total_updates(0), _current_checkpoint(0) {
-  updateSensors();
+CarAgent::CarAgent() {
+  reset(glm::vec2(0,0), 0);
 }
 
 void
@@ -181,17 +181,29 @@ CarAgent::collideWalls(const Lines& walls) {
     }
 }
 
+
 void
 CarAgent::reset(const Circuit& circuit) {
-  _position = circuit.getStartingPosition();
-  _angle = circuit.getStartingAngle();
+  reset(circuit.getStartingPosition(), circuit.getStartingAngle());
+}
 
-  _alive = true;
+void
+CarAgent::reset(const glm::vec2& pos, float angle)
+{
+  _position = pos;
+  _angle = angle;
+  _speed = 0.0f;
+
   _fitness = 0;
-  _total_updates = 0;
-  _trail.clear();
+  _alive = true;
   _life = k_maxLife;
+  _total_updates = 0;
+
+  updateSensors();
+
   _current_checkpoint = 0;
+  _trail.clear();
+
 }
 
 float

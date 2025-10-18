@@ -1,6 +1,10 @@
 
 # Changelog
 
+## [0.0.8] - 2025-10-18
+- migrated the emsdk to version 3.1.74
+- migrated the geronimo lib to version 0.0.17
+
 ## [0.0.7] - 2023-06-24
 ### Changed
 - chore: dependencies update

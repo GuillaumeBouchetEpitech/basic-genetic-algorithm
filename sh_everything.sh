@@ -170,7 +170,7 @@ func_ensure_dependency_exist() {
 }
 
 func_ensure_dependency_exist "${DIR_LIB_GERONIMO}/lib/native/lib-geronimo-system.a"
-func_ensure_dependency_exist "${DIR_LIB_GERONIMO}/lib/web-wasm/lib-geronimo-system.bc"
+func_ensure_dependency_exist "${DIR_LIB_GERONIMO}/lib/web-wasm/lib-geronimo-system.a"
 
 #
 #

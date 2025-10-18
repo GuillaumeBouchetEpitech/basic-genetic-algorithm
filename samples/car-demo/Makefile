@@ -80,15 +80,15 @@ else ifeq ($(build_platform),web-wasm)
 
 NAME_APPLICATION=				$(DIR_APPLICATION)/index.js
 
-NAME_LIB_BASIC_GENTIC_ALGORITHM=	$(DIR_LIB_BASIC_GENETIC_ALGORITHM)/lib/web-wasm/lib-basic-genetic-algorithm.bc
+NAME_LIB_BASIC_GENTIC_ALGORITHM=	$(DIR_LIB_BASIC_GENETIC_ALGORITHM)/lib/web-wasm/lib-basic-genetic-algorithm.a
 
-NAME_LIB_GERONIMO+=	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-audio.bc
-NAME_LIB_GERONIMO+=	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-physics.bc
-NAME_LIB_GERONIMO+=	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-graphics.bc
-NAME_LIB_GERONIMO+=	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-system.bc
-NAME_LIB_BULLET_PHYSICS+=		$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-linearmath.bc
-NAME_LIB_BULLET_PHYSICS+=		$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-collision.bc
-NAME_LIB_BULLET_PHYSICS+=		$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-dynamics.bc
+NAME_LIB_GERONIMO+=	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-audio.a
+NAME_LIB_GERONIMO+=	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-physics.a
+NAME_LIB_GERONIMO+=	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-graphics.a
+NAME_LIB_GERONIMO+=	$(DIR_LIB_GERONIMO)/lib/web-wasm/lib-geronimo-system.a
+NAME_LIB_BULLET_PHYSICS+=		$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-linearmath.a
+NAME_LIB_BULLET_PHYSICS+=		$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-collision.a
+NAME_LIB_BULLET_PHYSICS+=		$(DIR_LIB_GERONIMO)/thirdparties/lib/web-wasm/lib-bullet-physics-dynamics.a
 
 endif
 
@@ -219,14 +219,14 @@ AR=emar
 
 CXXFLAGS += -s USE_PTHREADS=0
 
-LDFLAGS+= -s GL_PREINITIALIZED_CONTEXT=1
+LDFLAGS += -s GL_PREINITIALIZED_CONTEXT=1
 
 LDFLAGS += -s USE_SDL=2
 LDFLAGS += -s USE_WEBGL2=1
 LDFLAGS += -s FULL_ES3=1
 LDFLAGS += -s WASM=1
-LDFLAGS += -s BINARYEN_IGNORE_IMPLICIT_TRAPS=1
-LDFLAGS += -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=0
+# LDFLAGS += -s BINARYEN_IGNORE_IMPLICIT_TRAPS=1
+# LDFLAGS += -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=0
 LDFLAGS += -s EXPORTED_RUNTIME_METHODS=cwrap
 
 ifeq ($(build_mode),debug)

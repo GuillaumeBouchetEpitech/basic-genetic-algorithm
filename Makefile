@@ -44,7 +44,7 @@ NAME_TARGET=		$(DIR_TARGET)/lib-basic-genetic-algorithm.a
 else
 
 DIR_TARGET=			./lib/web-wasm
-NAME_TARGET=		$(DIR_TARGET)/lib-basic-genetic-algorithm.bc
+NAME_TARGET=		$(DIR_TARGET)/lib-basic-genetic-algorithm.a
 
 endif
 
@@ -95,7 +95,7 @@ BUILD_FLAG=		-g3 # debug flag
 endif
 
 CXXFLAGS += $(BUILD_FLAG)
-CXXFLAGS += -std=c++17
+CXXFLAGS += -std=c++20
 CXXFLAGS += -Wall -W -Wextra -Wunused -Wpedantic -Wshadow -Wconversion -Werror
 CXXFLAGS += -I$(DIR_SRC)
 CXXFLAGS += -I$(DIR_LIB_GERONIMO)/src

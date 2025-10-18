@@ -26,10 +26,10 @@ SRC+= \
 		$(DIR_SRC)/genetic_algorithm/*.cpp \
 	)
 
-SRC+= \
-	$(wildcard \
-		$(DIR_SRC)/continuous_genetic_algorithm/*.cpp \
-	)
+# SRC+= \
+# 	$(wildcard \
+# 		$(DIR_SRC)/continuous_genetic_algorithm/*.cpp \
+# 	)
 
 OBJ=		$(patsubst %.cpp, $(DIR_OBJ)/%.o, $(SRC))
 
